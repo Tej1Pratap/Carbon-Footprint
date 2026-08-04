@@ -18,15 +18,26 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (!userRepository.existsByEmail("admin@admin.com")) {
+        if (!userRepository.existsByEmail("tejpratap11102@gmail.com")) {
             User admin = new User();
             admin.setUsername("SuperAdmin");
-            admin.setEmail("admin@admin.com");
-            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setEmail("tejpratap11102@gmail.com");
+            admin.setPassword(passwordEncoder.encode("Tej@11"));
             admin.setRole("ADMIN");
             admin.setStatus("ACTIVE");
+            admin.setEnabled(true);
+            admin.setEmailVerified(true);
             userRepository.save(admin);
-            System.out.println("Default admin user created: admin@admin.com / admin123");
+            System.out.println("Default admin user created: tejpratap11102@gmail.com / Tej@11");
+        } else {
+            User admin = userRepository.findByEmail("tejpratap11102@gmail.com").orElse(null);
+            if (admin != null && (!admin.isEnabled() || !admin.isEmailVerified() || !"ADMIN".equals(admin.getRole()))) {
+                admin.setRole("ADMIN");
+                admin.setEnabled(true);
+                admin.setEmailVerified(true);
+                userRepository.save(admin);
+                System.out.println("Updated existing user to be verified admin.");
+            }
         }
     }
 }
