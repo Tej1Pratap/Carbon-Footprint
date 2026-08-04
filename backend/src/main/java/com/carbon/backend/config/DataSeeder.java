@@ -20,7 +20,7 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (!userRepository.existsByEmail("tejpratap11102@gmail.com")) {
             User admin = new User();
-            admin.setUsername("SuperAdmin");
+            admin.setUsername("TejAdmin");
             admin.setEmail("tejpratap11102@gmail.com");
             admin.setPassword(passwordEncoder.encode("Tej@11"));
             admin.setRole("ADMIN");
