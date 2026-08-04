@@ -261,6 +261,7 @@ body {
   padding: 40px;
   background: var(--bg-main);
   overflow-y: auto;
+  overscroll-behavior-y: none;
 }
 
 /* Google Translate Widget Customization */
