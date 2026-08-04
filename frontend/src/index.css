@@ -22,8 +22,9 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
+html, body, #root {
   overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
 }
 
 body {
