@@ -25,16 +25,20 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (!userRepository.existsByEmail(adminEmail)) {
-            User admin = new User();
-            admin.setUsername("TejAdmin");
-            admin.setEmail(adminEmail);
-            admin.setPassword(passwordEncoder.encode(adminPassword));
-            admin.setRole("ADMIN");
-            admin.setStatus("ACTIVE");
-            admin.setEnabled(true);
-            admin.setEmailVerified(true);
-            userRepository.save(admin);
-            System.out.println("Default admin user created with provided credentials.");
+            try {
+                User admin = new User();
+                admin.setUsername(adminEmail.split("@")[0] + "_admin");
+                admin.setEmail(adminEmail);
+                admin.setPassword(passwordEncoder.encode(adminPassword));
+                admin.setRole("ADMIN");
+                admin.setStatus("ACTIVE");
+                admin.setEnabled(true);
+                admin.setEmailVerified(true);
+                userRepository.save(admin);
+                System.out.println("Default admin user created with provided credentials.");
+            } catch (Exception e) {
+                System.out.println("Could not create admin user (might already exist with different email/username): " + e.getMessage());
+            }
         } else {
             User admin = userRepository.findByEmail(adminEmail).orElse(null);
             if (admin != null && (!admin.isEnabled() || !admin.isEmailVerified() || !"ADMIN".equals(admin.getRole()))) {
