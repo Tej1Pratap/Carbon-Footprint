@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Leaf, Activity, Target, Trophy, Lightbulb, ArrowRight, CheckCircle2, ShieldCheck, Zap, Globe, Cloud, LineChart, Users, Smile } from 'lucide-react';
+import GoogleTranslate from '../components/GoogleTranslate';
 
 const StatCard = ({ icon, label, endValue, suffix = '' }) => {
   const [value, setValue] = useState(0);
@@ -73,15 +74,16 @@ const Landing = () => {
               <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/30">
                 <Leaf className="text-white w-5 h-5" />
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent hidden sm:block">
                 EcoTrack
               </span>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <GoogleTranslate />
               <Link to="/login" className="text-slate-600 hover:text-green-600 font-medium transition-colors hidden sm:block">
                 Log In
               </Link>
-              <Link to="/register" className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-full font-medium transition-all shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5">
+              <Link to="/register" className="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium transition-all shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:-translate-y-0.5">
                 Get Started
               </Link>
             </div>

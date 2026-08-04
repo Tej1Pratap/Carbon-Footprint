@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { Leaf, Award, Shield, Users, ArrowLeft } from 'lucide-react';
+import GoogleTranslate from '../components/GoogleTranslate';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -62,7 +63,10 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex w-full">
+    <div className="min-h-screen flex w-full relative">
+      <div className="absolute top-4 right-4 z-50">
+        <GoogleTranslate />
+      </div>
       {/* Left Panel - Green Info Section */}
       <div className="hidden lg:flex w-1/2 bg-green-600 text-white flex-col justify-between p-12 relative overflow-hidden">
         {/* Background decorative elements */}
