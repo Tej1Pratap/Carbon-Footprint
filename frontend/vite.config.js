@@ -17,6 +17,8 @@ export default defineConfig({
         short_name: 'EcoTrack',
         description: 'Web Platform for Carbon Footprint Monitoring and Sustainability Analytics',
         theme_color: '#ffffff',
+        orientation: 'portrait',
+        display: 'standalone',
         icons: [
           {
             src: '/pwa-192x192.png',

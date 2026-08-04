@@ -2,6 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
+import { registerSW } from 'virtual:pwa-register'
+
+// Register the PWA service worker so PWABuilder detects it
+registerSW({ immediate: true })
 
 // Global Fetch Interceptor to bypass Ngrok warning screens
 const originalFetch = window.fetch;
