@@ -135,8 +135,8 @@ const GoogleTranslate = () => {
         className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg py-1.5 px-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500/20"
       >
         <Globe size={16} className="text-slate-500" />
-        <span className="max-w-[100px] truncate">{currentLang.name.split(' ')[0]}</span>
-        <ChevronDown size={14} className="text-slate-400 ml-1" />
+        <span className="max-w-[100px] truncate hidden sm:inline-block">{currentLang.name.split(' ')[0]}</span>
+        <ChevronDown size={14} className="text-slate-400 ml-1 hidden sm:inline-block" />
       </button>
 
       {/* Custom Dropdown Menu */}

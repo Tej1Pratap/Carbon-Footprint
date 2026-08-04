@@ -188,7 +188,7 @@ const AdminLayout = ({ children }) => {
           
           <div className="flex items-center space-x-2 md:space-x-4">
             {/* Language Selector */}
-            <div className="flex items-center mt-1 hidden md:block">
+            <div className="flex items-center mt-1">
               <GoogleTranslate />
             </div>
 
