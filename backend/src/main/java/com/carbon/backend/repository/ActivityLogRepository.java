@@ -9,4 +9,6 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> 
     
     @Transactional
     void deleteByUserId(Long userId);
+
+    long countByLogDateAfter(java.time.LocalDateTime date);
 }

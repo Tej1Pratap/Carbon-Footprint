@@ -120,13 +120,22 @@ public class ChatService {
         StringBuilder context = new StringBuilder();
         
         if ("ADMIN".equals(user.getRole())) {
+            java.time.LocalDateTime startOfDay = java.time.LocalDate.now().atStartOfDay();
+            long usersRegisteredToday = userRepository.countByRegistrationDateAfter(startOfDay);
+            long usersLoggedInToday = userRepository.countByLastLoginAfter(startOfDay);
+            long activitiesLoggedToday = activityLogRepository.countByLogDateAfter(startOfDay);
+
             context.append("You are the Super Admin Assistant for the EcoTrack Carbon Footprint app.\n");
             context.append("User Name: ").append(user.getUsername()).append(" (ADMIN)\n");
-            context.append("--- SYSTEM DATA ---\n");
+            context.append("--- SYSTEM DATA & LIVE ANALYTICS ---\n");
             context.append(String.format("Total Registered Users on Platform: %d\n", userRepository.count()));
+            context.append(String.format("Users Registered Today: %d\n", usersRegisteredToday));
+            context.append(String.format("Users Logged In Today: %d\n", usersLoggedInToday));
             context.append(String.format("Total Activity Logs on Platform: %d\n", activityLogRepository.count()));
+            context.append(String.format("Activity Logs Created Today: %d\n", activitiesLoggedToday));
             context.append("-----------------\n");
             context.append("As an admin assistant, you should help the admin manage the platform, answer questions about system statistics, and provide guidance on admin tools like user management, emission factors, and reports.\n");
+            context.append("If the admin asks a data question (like 'how many users logged in'), use the LIVE ANALYTICS provided above. Do not say you don't have the data if it is provided above.\n");
         } else {
             context.append("You are an AI Sustainability Assistant for a Carbon Footprint tracking app.\n");
             context.append("User Name: ").append(user.getUsername()).append("\n");

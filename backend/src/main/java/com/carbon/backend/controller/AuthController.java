@@ -29,6 +29,8 @@ public class AuthController {
         try {
             String token = body.get("token");
             User user = userService.googleSignIn(token);
+            user.setLastLogin(java.time.LocalDateTime.now());
+            userRepo.save(user);
             String jwt = jwtUtil.generateJwtToken(user.getEmail());
             return ResponseEntity.ok(Map.of("token", jwt, "user", user));
         } catch (Exception e) {
@@ -51,8 +53,9 @@ public class AuthController {
                 if (!user.isEmailVerified() || !user.isEnabled()) {
                     user.setEmailVerified(true);
                     user.setEnabled(true);
-                    userRepo.save(user);
                 }
+                user.setLastLogin(java.time.LocalDateTime.now());
+                userRepo.save(user);
                 
                 String token = jwtUtil.generateJwtToken(email);
                 return ResponseEntity.ok(Map.of("token", token, "user", user));
