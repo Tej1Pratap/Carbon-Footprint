@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Leaf, Activity, Target, Trophy, Lightbulb, ArrowRight, CheckCircle2, ShieldCheck, Zap, Globe, Cloud, LineChart, Users, Smile } from 'lucide-react';
 import GoogleTranslate from '../components/GoogleTranslate';
+import PublicChatbot from '../components/PublicChatbot';
 
 const StatCard = ({ icon, label, endValue, suffix = '' }) => {
   const [value, setValue] = useState(0);
