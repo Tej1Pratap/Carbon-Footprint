@@ -235,6 +235,7 @@ const Landing = () => {
           </div>
         </div>
       </footer>
+      <PublicChatbot />
     </div>
   );
 };

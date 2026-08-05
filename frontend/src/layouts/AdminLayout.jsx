@@ -6,6 +6,7 @@ import {
   Award, BarChart3, Trophy, Bell, Settings, UserCircle, LogOut, Menu, X, Search, Sun, Moon, ChevronLeft, ChevronRight, HelpCircle
 } from 'lucide-react';
 import GoogleTranslate from '../components/GoogleTranslate';
+import Chatbot from '../components/Chatbot';
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -283,6 +284,7 @@ const AdminLayout = ({ children }) => {
           </div>
         </main>
       </div>
+      <Chatbot />
     </div>
   );
 };

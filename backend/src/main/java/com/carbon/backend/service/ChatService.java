@@ -118,31 +118,42 @@ public class ChatService {
                 .collect(Collectors.toList());
 
         StringBuilder context = new StringBuilder();
-        context.append("You are an AI Sustainability Assistant for a Carbon Footprint tracking app.\n");
-        context.append("User Name: ").append(user.getUsername()).append("\n");
-        context.append("--- USER DATA ---\n");
-        context.append(String.format("Total Activities Logged: %d\n", logs.size()));
-        context.append(String.format("Total Carbon Footprint: %.2f kg CO2\n", totalEmissions));
-        context.append(String.format("Today's Emissions: %.2f kg CO2\n", todayEmissions));
-        context.append(String.format("Yesterday's Emissions: %.2f kg CO2\n", yesterdayEmissions));
-        context.append(String.format("This Week's Emissions: %.2f kg CO2\n", thisWeekEmissions));
-        context.append(String.format("This Month's Emissions: %.2f kg CO2\n", thisMonthEmissions));
-        if (highestEmissionDate != null) {
-            context.append(String.format("Highest Emission Date (Lifetime): %s with %.2f kg CO2\n", highestEmissionDate.toString(), maxDailyEmission));
-        } else {
-            context.append("Highest Emission Date (Lifetime): None\n");
-        }
-        context.append("Active Goals: ").append(goals.size()).append("\n");
         
-        if (!recentLogs.isEmpty()) {
-            context.append("5 Most Recent Logged Activities:\n");
-            for (ActivityLog rl : recentLogs) {
-                context.append(String.format("- %s on %s: %.2f kg CO2\n", rl.getActivityType(), rl.getLogDate().toLocalDate().toString(), rl.getEmissionsKgCo2()));
-            }
+        if ("ADMIN".equals(user.getRole())) {
+            context.append("You are the Super Admin Assistant for the EcoTrack Carbon Footprint app.\n");
+            context.append("User Name: ").append(user.getUsername()).append(" (ADMIN)\n");
+            context.append("--- SYSTEM DATA ---\n");
+            context.append(String.format("Total Registered Users on Platform: %d\n", userRepository.count()));
+            context.append(String.format("Total Activity Logs on Platform: %d\n", activityLogRepository.count()));
+            context.append("-----------------\n");
+            context.append("As an admin assistant, you should help the admin manage the platform, answer questions about system statistics, and provide guidance on admin tools like user management, emission factors, and reports.\n");
         } else {
-            context.append("Recent Activities: None.\n");
+            context.append("You are an AI Sustainability Assistant for a Carbon Footprint tracking app.\n");
+            context.append("User Name: ").append(user.getUsername()).append("\n");
+            context.append("--- USER DATA ---\n");
+            context.append(String.format("Total Activities Logged: %d\n", logs.size()));
+            context.append(String.format("Total Carbon Footprint: %.2f kg CO2\n", totalEmissions));
+            context.append(String.format("Today's Emissions: %.2f kg CO2\n", todayEmissions));
+            context.append(String.format("Yesterday's Emissions: %.2f kg CO2\n", yesterdayEmissions));
+            context.append(String.format("This Week's Emissions: %.2f kg CO2\n", thisWeekEmissions));
+            context.append(String.format("This Month's Emissions: %.2f kg CO2\n", thisMonthEmissions));
+            if (highestEmissionDate != null) {
+                context.append(String.format("Highest Emission Date (Lifetime): %s with %.2f kg CO2\n", highestEmissionDate.toString(), maxDailyEmission));
+            } else {
+                context.append("Highest Emission Date (Lifetime): None\n");
+            }
+            context.append("Active Goals: ").append(goals.size()).append("\n");
+            
+            if (!recentLogs.isEmpty()) {
+                context.append("5 Most Recent Logged Activities:\n");
+                for (ActivityLog rl : recentLogs) {
+                    context.append(String.format("- %s on %s: %.2f kg CO2\n", rl.getActivityType(), rl.getLogDate().toLocalDate().toString(), rl.getEmissionsKgCo2()));
+                }
+            } else {
+                context.append("Recent Activities: None.\n");
+            }
+            context.append("-----------------\n");
         }
-        context.append("-----------------\n");
 
         context.append("\nUser requested language: ").append(request.getLanguage() != null ? request.getLanguage() : "en").append("\n");
         context.append("RULES FOR ANSWERING:\n");
@@ -166,6 +177,31 @@ public class ChatService {
         ChatResponse response = new ChatResponse();
         response.setResponse(aiResponseText);
         response.setSessionId(session.getId());
+        return response;
+    }
+
+    public ChatResponse processPublicMessage(ChatRequest request) {
+        StringBuilder context = new StringBuilder();
+        context.append("You are an AI Assistant for the EcoTrack Carbon Footprint website.\n");
+        context.append("You are talking to a public visitor on the landing page.\n");
+        context.append("Information about the platform:\n");
+        context.append("- EcoTrack helps users log their daily activities, track carbon emissions, set sustainability goals, and compete on leaderboards.\n");
+        context.append("- It has features like Activity Logging, Goal Tracking, Analytics, and Badges.\n");
+        context.append("- Users can register for free.\n");
+        context.append("\nUser requested language: ").append(request.getLanguage() != null ? request.getLanguage() : "en").append("\n");
+        context.append("RULES FOR ANSWERING:\n");
+        context.append("1. Be highly enthusiastic, welcoming, and concise (under 3 sentences). Use emojis.\n");
+        context.append("2. Encourage the user to sign up or register to start tracking their footprint.\n");
+        context.append("3. If they ask about specific data (like 'what is my footprint'), tell them they need to create an account and log in first.\n");
+        context.append("4. Answer in the requested language.\n");
+
+        String aiResponseText = aiIntegrationService.generateResponse(context.toString(), request.getMessage());
+        
+        ChatResponse response = new ChatResponse();
+        response.setResponse(aiResponseText);
+        // Public chat has no saved session history
+        response.setSessionId(0L);
+        
         return response;
     }
 }

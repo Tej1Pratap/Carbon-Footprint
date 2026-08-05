@@ -229,4 +229,23 @@ public class EmailService {
         html.append(getFooter());
         sendHtmlEmail(to, subject, html.toString());
     }
+
+    public void sendWelcomeEmail(String to, String username) {
+        String subject = "👋 Welcome to EcoTrack, " + username + "!";
+        StringBuilder html = new StringBuilder();
+        html.append(getHeader());
+        html.append("<h2 style='color: #111827; margin-top: 0;'>Welcome aboard, ").append(username).append("!</h2>");
+        html.append("<p>We are thrilled to have you join EcoTrack. By registering, you've taken the first step towards a greener, more sustainable future.</p>");
+        html.append("<div style='background-color: #f0fdf4; padding: 15px; border-left: 4px solid #16a34a; margin: 20px 0;'>");
+        html.append("<h3 style='margin-top: 0; color: #166534;'>What's Next?</h3>");
+        html.append("<p style='color: #4b5563; margin-bottom: 5px;'>1. Log your daily activities</p>");
+        html.append("<p style='color: #4b5563; margin-bottom: 5px;'>2. Set sustainability goals</p>");
+        html.append("<p style='color: #4b5563; margin-bottom: 0;'>3. Compete on the leaderboard!</p>");
+        html.append("</div>");
+        html.append("<div style='text-align: center; margin: 30px 0;'>");
+        html.append("<a href='https://carbon-footprint-drab.vercel.app/dashboard' style='background-color: #16a34a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;'>Go to Dashboard</a>");
+        html.append("</div>");
+        html.append(getFooter());
+        sendHtmlEmail(to, subject, html.toString());
+    }
 }

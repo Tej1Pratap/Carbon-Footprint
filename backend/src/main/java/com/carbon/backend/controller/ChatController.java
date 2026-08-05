@@ -58,4 +58,9 @@ public class ChatController {
         Long userId = getUserIdFromToken(request);
         return ResponseEntity.ok(chatService.getOrCreateSession(userId));
     }
+
+    @PostMapping("/public")
+    public ResponseEntity<ChatResponse> sendPublicMessage(@RequestBody ChatRequest chatRequest) {
+        return ResponseEntity.ok(chatService.processPublicMessage(chatRequest));
+    }
 }

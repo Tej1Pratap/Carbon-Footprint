@@ -72,6 +72,8 @@ public class UserService {
         userRepository.save(user);
         
         emailVerificationTokenRepository.delete(token);
+        
+        emailService.sendWelcomeEmail(user.getEmail(), user.getUsername());
     }
     
     @Transactional
@@ -82,8 +84,8 @@ public class UserService {
         }
         
         // Rate limiting check (e.g. wait at least 60 seconds)
-        emailVerificationTokenRepository.findByUser(user).ifPresent(token -> {
-            if (token.getCreatedAt().plusMinutes(1).isAfter(java.time.LocalDateTime.now())) {
+        emailVerificationTokenRepository.findByUser(user).ifPresent(t -> {
+            if (t.getCreatedAt().plusMinutes(1).isAfter(java.time.LocalDateTime.now())) {
                 throw new RuntimeException("Please wait before requesting a new code");
             }
         });
@@ -98,21 +100,21 @@ public class UserService {
     public void generatePasswordResetToken(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
         
-        String token = UUID.randomUUID().toString();
+        String resetTokenStr = UUID.randomUUID().toString();
         PasswordResetToken resetToken = tokenRepository.findByUser(user)
-                .orElse(new PasswordResetToken(token, user));
+                .orElse(new PasswordResetToken(resetTokenStr, user));
                 
-        resetToken.setToken(token);
+        resetToken.setToken(resetTokenStr);
         resetToken.setExpiresAt(java.time.LocalDateTime.now().plusMinutes(30));
         tokenRepository.save(resetToken);
         
-        String resetLink = frontendUrl + "/reset-password?token=" + token;
+        String resetLink = frontendUrl + "/reset-password?token=" + resetTokenStr;
         emailService.sendPasswordResetEmail(user.getEmail(), resetLink);
     }
     
     @Transactional
-    public void resetPasswordWithToken(String token, String newPassword) {
-        PasswordResetToken resetToken = tokenRepository.findByToken(token)
+    public void resetPasswordWithToken(String tokenStr, String newPassword) {
+        PasswordResetToken resetToken = tokenRepository.findByToken(tokenStr)
             .orElseThrow(() -> new RuntimeException("Invalid or missing token"));
             
         if (resetToken.isExpired()) {
@@ -168,7 +170,10 @@ public class UserService {
                 user.setProfilePicture(picture);
                 user.setRole("USER");
                 user.setStatus("ACTIVE");
-                return userRepository.save(user);
+                User savedUser = userRepository.save(user);
+                
+                emailService.sendWelcomeEmail(savedUser.getEmail(), savedUser.getUsername());
+                return savedUser;
             }
         } catch (Exception e) {
             throw new RuntimeException("Google Sign-In failed: " + e.getMessage());
