@@ -97,16 +97,28 @@ const GoogleTranslate = () => {
   }, []);
 
   const handleLanguageSelect = (lang) => {
+    // Explicitly set the googtrans cookies which Google Translate reads on load
+    document.cookie = `googtrans=/en/${lang.code}; path=/`;
+    document.cookie = `googtrans=/en/${lang.code}; domain=${window.location.hostname}; path=/`;
+    
     const selectEl = document.querySelector('.goog-te-combo');
-    if (selectEl) {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (selectEl && !isMobile) {
+      // On desktop, programmatically changing the select works smoothly without reload
       selectEl.value = lang.code;
-      // Google translate requires the change event to bubble
       selectEl.dispatchEvent(new Event('change', { bubbles: true }));
       setCurrentLang(lang);
       setIsOpen(false);
       setSearchTerm('');
     } else {
-      console.warn("Google Translate select element not found.");
+      // On mobile (APK WebViews/Chrome), Google either puts the widget in an iframe 
+      // or blocks synthetic events. Reloading forces Google to read the cookie we just set.
+      setCurrentLang(lang);
+      setIsOpen(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     }
   };
 
