@@ -31,7 +31,7 @@ const AdminUsers = ({ isDarkMode }) => {
   const fetchUsers = async () => {
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/admin/users', {
-        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       const data = await res.json();
       setUsers(data);
@@ -47,7 +47,7 @@ const AdminUsers = ({ isDarkMode }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({ action, ids })
       });

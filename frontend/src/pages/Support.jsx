@@ -41,7 +41,7 @@ export default function Support() {
 
   const fetchData = async () => {
     try {
-      const headers = { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` };
+      const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
       const [faqRes, ticketRes, statusRes] = await Promise.all([
         fetch(import.meta.env.VITE_API_URL + '/api/support/faqs', { headers }),
         fetch(import.meta.env.VITE_API_URL + '/api/support/tickets', { headers }),
@@ -63,7 +63,7 @@ export default function Support() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/support/tickets', {
         method: 'POST',
         headers: {
@@ -93,7 +93,7 @@ export default function Support() {
 
   const viewTicketDetail = async (id) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -110,7 +110,7 @@ export default function Support() {
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${selectedTicket.ticketId}/rating`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}`, 'Content-Type': 'application/json' },
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ stars: ratingStars, comment: ratingComment })
       });
       if (res.ok) {
@@ -127,7 +127,7 @@ export default function Support() {
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${selectedTicket.ticketId}/status`, {
         method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}`, 'Content-Type': 'application/json' },
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })
       });
       if (res.ok) {
@@ -141,7 +141,7 @@ export default function Support() {
     e.preventDefault();
     if (!replyMessage.trim()) return;
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${selectedTicket.ticketId}/reply`, {
         method: 'POST',
         headers: {

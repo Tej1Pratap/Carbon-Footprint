@@ -19,7 +19,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       try {
         const res = await fetch(import.meta.env.VITE_API_URL + `/api/dashboard/overview?timeframe=${timeframe}`, {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -27,8 +27,8 @@ const Dashboard = () => {
         if (res.ok) {
           setData(await res.json());
         } else if (res.status === 401 || res.status === 403) {
-          sessionStorage.removeItem('token');
-          sessionStorage.removeItem('user');
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
           navigate('/login');
         } else {
           setError(`Dashboard failed to load. Status: ${res.status}`);

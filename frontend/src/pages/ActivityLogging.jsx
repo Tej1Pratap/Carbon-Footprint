@@ -77,7 +77,7 @@ const ActivityLogging = () => {
   
   const handleSave = async (e) => {
     e.preventDefault();
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (!token) return;
     
     try {
@@ -102,8 +102,8 @@ const ActivityLogging = () => {
         // Hide success message after 6 seconds to allow them to log again
         setTimeout(() => setSuccessData(null), 6000);
       } else if (response.status === 401 || response.status === 403) {
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('user');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         window.location.href = '/login';
       } else {
         const errorText = await response.text();

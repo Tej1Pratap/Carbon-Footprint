@@ -26,7 +26,7 @@ const Settings = () => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   useEffect(() => {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('user');
     if (userStr) {
       const u = JSON.parse(userStr);
       setUser(u);
@@ -52,7 +52,7 @@ const Settings = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     
     // Send all fields to the backend
     const payload = { 
@@ -80,8 +80,8 @@ const Settings = () => {
       if (res.ok) {
         setMsg("Settings updated successfully!");
         
-        // Update sessionStorage
-        const userStr = sessionStorage.getItem('user');
+        // Update localStorage
+        const userStr = localStorage.getItem('user');
         if (userStr) {
           const u = JSON.parse(userStr);
           if (payload.username) u.username = payload.username;
@@ -92,7 +92,7 @@ const Settings = () => {
           u.leaderboardAlerts = leaderboardAlerts;
           u.publicProfile = publicProfile;
           u.metric = metric;
-          sessionStorage.setItem('user', JSON.stringify(u));
+          localStorage.setItem('user', JSON.stringify(u));
           setUser(u);
           setUsername(u.username);
         }
@@ -109,7 +109,7 @@ const Settings = () => {
   };
 
   const handleExportCsv = async () => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/activity/logs', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -147,7 +147,7 @@ const Settings = () => {
     const confirmed = window.confirm("Are you sure you want to permanently delete your account? This action cannot be undone and all your data will be lost.");
     if (!confirmed) return;
 
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/user/delete', {
         method: 'DELETE',
@@ -155,7 +155,7 @@ const Settings = () => {
       });
       
       if (res.ok) {
-        sessionStorage.clear();
+        localStorage.clear();
         navigate('/login');
       } else {
         alert("Failed to delete account. Please try again.");

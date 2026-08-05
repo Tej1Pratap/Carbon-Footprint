@@ -23,8 +23,8 @@ const Login = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
         if (data.user.role === 'ADMIN') {
           navigate('/admin');
         } else {
@@ -56,8 +56,8 @@ const Login = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        sessionStorage.setItem('user', JSON.stringify(data.user));
-        sessionStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
         
         if (data.user.role === 'ADMIN') {
           navigate('/admin');

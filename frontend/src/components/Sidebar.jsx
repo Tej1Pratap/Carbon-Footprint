@@ -6,7 +6,7 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   
-  const userStr = sessionStorage.getItem('user');
+  const userStr = localStorage.getItem('user');
   const user = userStr ? JSON.parse(userStr) : null;
   const isAdmin = user?.role === 'ADMIN';
 
@@ -48,8 +48,8 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   ];
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/login');
   };
 

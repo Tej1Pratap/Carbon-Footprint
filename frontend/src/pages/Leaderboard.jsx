@@ -33,7 +33,7 @@ export default function Leaderboard() {
   const fetchData = async () => {
     setRefreshing(true);
     try {
-      const headers = { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` };
+      const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
       
       const [boardRes, statsRes, myRankRes, challengesRes] = await Promise.all([
         fetch(import.meta.env.VITE_API_URL + '/api/v2/leaderboard', { headers }),
@@ -45,7 +45,7 @@ export default function Leaderboard() {
       if (boardRes.ok) {
         const data = await boardRes.json();
         setBoard(data);
-        if (data.length > 0 && data[0].username === sessionStorage.getItem('username')) {
+        if (data.length > 0 && data[0].username === localStorage.getItem('username')) {
           triggerConfetti();
         }
       }

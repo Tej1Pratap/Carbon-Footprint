@@ -9,7 +9,7 @@ const SustainabilityGoals = () => {
   const [filter, setFilter] = useState('ACTIVE'); // 'ACTIVE' or 'PREVIOUS'
 
   const fetchGoals = async () => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const res = await fetch(import.meta.env.VITE_API_URL + '/api/goals', { headers: { 'Authorization': `Bearer ${token}` } });
     if (res.ok) setGoals(await res.json());
   };
@@ -18,7 +18,7 @@ const SustainabilityGoals = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     await fetch(import.meta.env.VITE_API_URL + '/api/goals', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },

@@ -23,8 +23,8 @@ const Register = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        sessionStorage.setItem('token', data.token);
-        sessionStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
         if (data.user.role === 'ADMIN') {
           navigate('/admin');
         } else {

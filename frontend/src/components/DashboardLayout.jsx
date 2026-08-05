@@ -16,7 +16,7 @@ const DashboardLayout = ({ children }) => {
   const profileRef = useRef(null);
 
   useEffect(() => {
-    if (!sessionStorage.getItem('token')) {
+    if (!localStorage.getItem('token')) {
       navigate('/login');
     } else {
       fetchNotifications();
@@ -34,7 +34,7 @@ const DashboardLayout = ({ children }) => {
 
   const fetchNotifications = async () => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/notifications', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -43,14 +43,14 @@ const DashboardLayout = ({ children }) => {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/login');
   };
 
   const markAsRead = async (id) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       await fetch(import.meta.env.VITE_API_URL + `/api/notifications/${id}/read`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
@@ -61,7 +61,7 @@ const DashboardLayout = ({ children }) => {
 
   const markAllAsRead = async () => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       await fetch(import.meta.env.VITE_API_URL + `/api/notifications/read-all`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
@@ -70,7 +70,7 @@ const DashboardLayout = ({ children }) => {
     } catch (err) { console.error(err); }
   };
 
-  const userString = sessionStorage.getItem('user');
+  const userString = localStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
   const username = user?.username || 'User';
   const profilePic = user?.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=22c55e&color=fff`;

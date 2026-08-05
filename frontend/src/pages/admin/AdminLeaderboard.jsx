@@ -29,7 +29,7 @@ export default function AdminLeaderboard({ isDarkMode }) {
 
   const fetchData = async () => {
     try {
-      const headers = { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` };
+      const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
       const [boardRes, statsRes] = await Promise.all([
         fetch(import.meta.env.VITE_API_URL + '/api/v2/leaderboard', { headers }),
         fetch(import.meta.env.VITE_API_URL + '/api/v2/leaderboard/stats', { headers })

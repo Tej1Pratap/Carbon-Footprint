@@ -34,7 +34,7 @@ const AdminLayout = ({ children }) => {
   const fetchNotifications = async () => {
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/notifications', {
-        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       if (res.ok) setNotifications(await res.json());
     } catch (e) {}
@@ -50,15 +50,15 @@ const AdminLayout = ({ children }) => {
     try {
       await fetch(import.meta.env.VITE_API_URL + '/api/notifications/read-all', {
         method: 'PUT',
-        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       setNotifications(notifications.map(n => ({...n, read: true})));
     } catch (e) {}
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/login');
   };
 
@@ -90,7 +90,7 @@ const AdminLayout = ({ children }) => {
     }
   ];
 
-  const userString = sessionStorage.getItem('user');
+  const userString = localStorage.getItem('user');
   const user = userString ? JSON.parse(userString) : null;
   const username = user?.username || 'Admin User';
   const profilePic = user?.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=16a34a&color=fff`;
