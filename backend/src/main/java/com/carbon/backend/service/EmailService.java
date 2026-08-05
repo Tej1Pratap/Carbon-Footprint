@@ -1,34 +1,49 @@
 package com.carbon.backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import jakarta.mail.internet.MimeMessage;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmailService {
 
-    @Autowired(required = false)
-    private JavaMailSender mailSender;
+    @Value("${brevo.api.key}")
+    private String brevoApiKey;
 
     private void sendHtmlEmail(String to, String subject, String htmlContent) {
-        if (mailSender == null) {
+        if (brevoApiKey == null || brevoApiKey.isEmpty()) {
             System.out.println("Email Sending Disabled: " + subject + " -> " + to);
             return;
         }
+        
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("tejpratap11102@gmail.com", "Carbon Footprint Tracker");
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(htmlContent, true); // true indicates HTML
-            mailSender.send(message);
-            System.out.println("HTML Email successfully sent to " + to);
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "https://api.brevo.com/v3/smtp/email";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("api-key", brevoApiKey);
+            headers.set("Content-Type", "application/json");
+
+            Map<String, Object> body = new HashMap<>();
+            body.put("sender", Map.of("name", "EcoTrack Security", "email", "tejpratap11102@gmail.com"));
+            body.put("to", List.of(Map.of("email", to)));
+            body.put("subject", subject);
+            body.put("htmlContent", htmlContent);
+
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+            System.out.println("Email successfully sent via Brevo to " + to);
         } catch (Exception e) {
-            System.err.println("Failed to send HTML email: " + e.getMessage());
+            System.err.println("Failed to send email via Brevo: " + e.getMessage());
         }
     }
 
