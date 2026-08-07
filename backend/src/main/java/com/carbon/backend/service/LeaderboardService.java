@@ -27,6 +27,7 @@ public class LeaderboardService {
         List<LeaderboardEntry> entries = new ArrayList<>();
 
         for (User u : users) {
+            if ("ADMIN".equalsIgnoreCase(u.getRole())) continue;
             List<ActivityLog> logs = activityLogRepository.findByUserId(u.getId());
             List<Badge> userBadges = badgeRepository.findByUserId(u.getId());
             

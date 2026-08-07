@@ -133,6 +133,18 @@ public class ChatService {
             context.append(String.format("Users Logged In Today: %d\n", usersLoggedInToday));
             context.append(String.format("Total Activity Logs on Platform: %d\n", activityLogRepository.count()));
             context.append(String.format("Activity Logs Created Today: %d\n", activitiesLoggedToday));
+            
+            // Add top emitting users context
+            List<Object[]> topUsers = userRepository.getLeaderboardPreview(org.springframework.data.domain.PageRequest.of(0, 5));
+            if (!topUsers.isEmpty()) {
+                context.append("\n--- TOP USERS (LOWEST CARBON FOOTPRINT) ---\n");
+                for (int i = 0; i < topUsers.size(); i++) {
+                    Object[] row = topUsers.get(i);
+                    String uName = (String) row[0];
+                    Double emissions = (Double) row[2];
+                    context.append(String.format("%d. %s: %.2f kg CO2\n", i + 1, uName, emissions != null ? emissions : 0.0));
+                }
+            }
             context.append("-----------------\n");
             context.append("As an admin assistant, you should help the admin manage the platform, answer questions about system statistics, and provide guidance on admin tools like user management, emission factors, and reports.\n");
             context.append("If the admin asks a data question (like 'how many users logged in'), use the LIVE ANALYTICS provided above. Do not say you don't have the data if it is provided above.\n");
@@ -168,7 +180,7 @@ public class ChatService {
         context.append("RULES FOR ANSWERING:\n");
         context.append("1. Keep answers concise, friendly, and under 3-4 sentences. Use emojis.\n");
         context.append("2. Answer in the requested language.\n");
-        context.append("3. STRICT ANTI-HALLUCINATION RULE: When the user asks about their emissions (e.g. 'what is my emission today', 'yesterday's emission', 'my carbon footprint'), you MUST ONLY rely on the 'USER DATA' block provided above. Do NOT invent, guess, or hallucinate numbers or activities. If the value provided above is 0.0 or 0, or if no recent activities are listed, you MUST explicitly state that they have not logged any activity for that period. Be helpful but completely factual based on the data provided.\n");
+        context.append("3. STRICT ANTI-HALLUCINATION RULE: When the user asks about data (e.g. 'what is my emission today', 'which user has more emission', 'how many users'), you MUST ONLY rely on the DATA blocks provided above. Do NOT invent, guess, or hallucinate numbers or activities. If the requested data is not present in the context above, explicitly state that you don't have that specific data. Be helpful but completely factual based on the data provided.\n");
 
         // 3. Get AI Response
         String aiResponseText = aiIntegrationService.generateResponse(context.toString(), request.getMessage());

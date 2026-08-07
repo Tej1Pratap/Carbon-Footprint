@@ -72,7 +72,7 @@ public class UserController {
     
     @GetMapping("/leaderboard")
     public ResponseEntity<?> getLeaderboard() {
-        List<User> users = userRepo.findAll();
+        List<User> users = userRepo.findAll().stream().filter(u -> !"ADMIN".equalsIgnoreCase(u.getRole())).collect(Collectors.toList());
         List<Map<String, Object>> leaderboard = users.stream().map(u -> {
             List<ActivityLog> logs = activityRepo.findByUserId(u.getId());
             double total = logs.stream().mapToDouble(ActivityLog::getEmissionsKgCo2).sum();
