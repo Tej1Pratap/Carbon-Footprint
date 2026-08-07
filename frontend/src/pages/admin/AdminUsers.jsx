@@ -15,6 +15,9 @@ const AdminUsers = ({ isDarkMode }) => {
   
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, action: null, targetIds: [] });
   const [openDropdownId, setOpenDropdownId] = useState(null);
+  
+  const [sortOrder, setSortOrder] = useState('NEWEST');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -22,6 +25,9 @@ const AdminUsers = ({ isDarkMode }) => {
     const handleClickOutside = (e) => {
       if (!e.target.closest('.action-dropdown-btn') && !e.target.closest('.action-dropdown-menu')) {
         setOpenDropdownId(null);
+      }
+      if (!e.target.closest('.filter-dropdown-container')) {
+        setIsFilterOpen(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -60,7 +66,7 @@ const AdminUsers = ({ isDarkMode }) => {
   };
 
   const filteredUsers = useMemo(() => {
-    return users.filter(u => {
+    let result = users.filter(u => {
       const term = searchTerm.toLowerCase();
       const dateStr = u.registrationDate ? new Date(u.registrationDate).toLocaleDateString().toLowerCase() : 'just now';
       return (
@@ -68,10 +74,21 @@ const AdminUsers = ({ isDarkMode }) => {
         u.username.toLowerCase().includes(term) ||
         u.role.toLowerCase().includes(term) ||
         (u.status || '').toLowerCase().includes(term) ||
+        (u.id && u.id.toString().toLowerCase().includes(term)) ||
         dateStr.includes(term)
       );
     });
-  }, [users, searchTerm]);
+
+    result.sort((a, b) => {
+      const dateA = a.registrationDate ? new Date(a.registrationDate).getTime() : 0;
+      const dateB = b.registrationDate ? new Date(b.registrationDate).getTime() : 0;
+      if (sortOrder === 'NEWEST') return dateB - dateA;
+      if (sortOrder === 'OLDEST') return dateA - dateB;
+      return 0;
+    });
+
+    return result;
+  }, [users, searchTerm, sortOrder]);
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage) || 1;
   const currentUsers = filteredUsers.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -182,14 +199,46 @@ const AdminUsers = ({ isDarkMode }) => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 type="text" 
-                placeholder="Search by name, email, or role..." 
+                placeholder="Search by name, ID, email..." 
                 value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className={`w-full pl-10 pr-4 py-2.5 bg-transparent border-none focus:outline-none text-sm rounded-xl placeholder-slate-400 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
               />
             </div>
-            <button className={`p-2.5 rounded-xl border transition-colors ${isDarkMode ? 'border-gray-700 text-slate-400 hover:text-white hover:bg-gray-700' : 'border-slate-200 text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}>
-              <Filter size={18} />
-            </button>
+            <div className="relative filter-dropdown-container">
+              <button onClick={() => setIsFilterOpen(!isFilterOpen)} className={`p-2.5 rounded-xl border transition-colors ${isDarkMode ? 'border-gray-700 text-slate-400 hover:text-white hover:bg-gray-700' : 'border-slate-200 text-slate-500 hover:text-slate-700 hover:bg-slate-100'} ${isFilterOpen ? (isDarkMode ? 'bg-gray-700 text-white' : 'bg-slate-100 text-slate-700') : ''}`}>
+                <Filter size={18} />
+              </button>
+              
+              <AnimatePresence>
+                {isFilterOpen && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95, y: -10 }} 
+                    animate={{ opacity: 1, scale: 1, y: 0 }} 
+                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                    className={`absolute right-0 top-12 w-48 rounded-xl shadow-xl border overflow-hidden z-30 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-100'}`}
+                  >
+                    <div className={`px-4 py-2 text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-400 bg-gray-900/50' : 'text-slate-500 bg-slate-50'}`}>
+                      Sort by Date
+                    </div>
+                    <button 
+                      onClick={() => { setSortOrder('NEWEST'); setIsFilterOpen(false); }} 
+                      className={`w-full flex items-center justify-between px-4 py-2.5 text-sm transition-colors ${sortOrder === 'NEWEST' ? (isDarkMode ? 'text-primary bg-primary/10' : 'text-primary bg-primary/10') : (isDarkMode ? 'text-slate-300 hover:bg-gray-700' : 'text-slate-700 hover:bg-slate-50')}`}
+                    >
+                      <span>New to Old</span>
+                      {sortOrder === 'NEWEST' && <CheckCircle2 size={16} />}
+                    </button>
+                    <button 
+                      onClick={() => { setSortOrder('OLDEST'); setIsFilterOpen(false); }} 
+                      className={`w-full flex items-center justify-between px-4 py-2.5 text-sm transition-colors ${sortOrder === 'OLDEST' ? (isDarkMode ? 'text-primary bg-primary/10' : 'text-primary bg-primary/10') : (isDarkMode ? 'text-slate-300 hover:bg-gray-700' : 'text-slate-700 hover:bg-slate-50')}`}
+                    >
+                      <span>Old to New</span>
+                      {sortOrder === 'OLDEST' && <CheckCircle2 size={16} />}
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
           
           {selectedIds.length > 0 && (
