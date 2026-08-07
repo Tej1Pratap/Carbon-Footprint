@@ -196,14 +196,15 @@ const AdminUsers = ({ isDarkMode }) => {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center space-x-2 bg-slate-50 dark:bg-gray-900/50 p-1.5 rounded-xl border border-slate-200 dark:border-gray-700">
               <span className={`px-3 text-sm font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{selectedIds.length} selected</span>
               <div className="w-px h-5 bg-slate-300 dark:bg-gray-600 mx-1"></div>
-              <button onClick={() => handleBulkAction('ACTIVATE')} className="p-2 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg tooltip-trigger" title="Activate Selected">
-                <UserCheck size={18} />
+              <button onClick={() => handleBulkAction('ACTIVATE')} className="flex items-center space-x-1.5 px-3 py-1.5 text-sm font-medium text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-900/20 rounded-lg transition-colors">
+                <UserCheck size={16} /><span>Activate</span>
               </button>
-              <button onClick={() => handleBulkAction('DEACTIVATE')} className="p-2 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg tooltip-trigger" title="Block Selected">
-                <UserX size={18} />
+              <button onClick={() => handleBulkAction('DEACTIVATE')} className="flex items-center space-x-1.5 px-3 py-1.5 text-sm font-medium text-amber-600 hover:bg-amber-50 dark:text-amber-400 dark:hover:bg-amber-900/20 rounded-lg transition-colors">
+                <UserX size={16} /><span>Block</span>
               </button>
-              <button onClick={() => setConfirmModal({ isOpen: true, action: 'DELETE', targetIds: selectedIds })} className="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg tooltip-trigger" title="Delete Selected">
-                <Trash2 size={18} />
+              <div className="w-px h-5 bg-slate-300 dark:bg-gray-600 mx-1"></div>
+              <button onClick={() => setConfirmModal({ isOpen: true, action: 'DELETE', targetIds: selectedIds })} className="flex items-center space-x-1.5 px-3 py-1.5 text-sm font-medium text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20 rounded-lg transition-colors">
+                <Trash2 size={16} /><span>Delete</span>
               </button>
             </motion.div>
           )}
