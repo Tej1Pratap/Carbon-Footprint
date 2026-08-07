@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Edit, Trash2, Shield, ShieldOff, MoreVertical, Plus, Filter, Download, UserCheck, UserX, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
+import { Search, Edit, Trash2, Shield, ShieldOff, MoreVertical, Plus, Filter, Download, UserCheck, UserX, ChevronLeft, ChevronRight, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 const AdminUsers = ({ isDarkMode }) => {
   const [users, setUsers] = useState([]);
