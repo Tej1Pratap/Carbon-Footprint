@@ -33,7 +33,7 @@ export default function Leaderboard() {
   const fetchData = async () => {
     setRefreshing(true);
     try {
-      const headers = { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
+      const headers = { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` };
       
       const [boardRes, statsRes, myRankRes, challengesRes] = await Promise.all([
         fetch(import.meta.env.VITE_API_URL + '/api/v2/leaderboard', { headers }),

@@ -19,7 +19,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
-      const token = localStorage.getItem('token');
+      const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
       try {
         const res = await fetch(import.meta.env.VITE_API_URL + `/api/dashboard/overview?timeframe=${timeframe}`, {
           headers: { 'Authorization': `Bearer ${token}` }

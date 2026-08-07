@@ -19,7 +19,7 @@ const Badges = () => {
 
   useEffect(() => {
     const fetchBadges = async () => {
-      const token = localStorage.getItem('token');
+      const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
       try {
         const res = await fetch(import.meta.env.VITE_API_URL + '/api/v2/badges', {
           headers: { 'Authorization': `Bearer ${token}` }

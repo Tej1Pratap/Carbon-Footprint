@@ -58,7 +58,7 @@ const AdminSupport = () => {
   }, []);
 
   const getHeaders = () => ({
-    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}`,
     'Content-Type': 'application/json'
   });
 

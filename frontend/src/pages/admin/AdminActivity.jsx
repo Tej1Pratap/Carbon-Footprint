@@ -30,7 +30,7 @@ const AdminActivity = ({ isDarkMode }) => {
   const fetchActivities = async () => {
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/admin/activities', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       const data = await res.json();
       setActivities(data);
@@ -46,7 +46,7 @@ const AdminActivity = ({ isDarkMode }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}`
         },
         body: JSON.stringify({ action, ids })
       });

@@ -10,6 +10,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const handleGoogleSuccess = async (credentialResponse) => {
@@ -23,8 +24,15 @@ const Login = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        const storage = rememberMe ? localStorage : sessionStorage;
+        storage.setItem('token', data.token);
+        storage.setItem('user', JSON.stringify(data.user));
+        
+        if (rememberMe) {
+          document.cookie = `token=${data.token}; max-age=${30*24*60*60}; path=/`;
+        }
+
         if (data.user.role === 'ADMIN') {
           navigate('/admin');
         } else {
@@ -56,8 +64,13 @@ const Login = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
+        const storage = rememberMe ? localStorage : sessionStorage;
+        storage.setItem('token', data.token);
+        storage.setItem('user', JSON.stringify(data.user));
+        
+        if (rememberMe) {
+          document.cookie = `token=${data.token}; max-age=${30*24*60*60}; path=/`;
+        }
         
         if (data.user.role === 'ADMIN') {
           navigate('/admin');
@@ -181,6 +194,19 @@ const Login = () => {
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none bg-slate-50 focus:bg-white text-slate-800"
                 required 
               />
+            </div>
+
+            <div className="flex items-center mt-2 mb-2">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 text-green-600 bg-slate-100 border-slate-300 rounded focus:ring-green-500 focus:ring-2"
+              />
+              <label htmlFor="rememberMe" className="ml-2 text-sm font-medium text-slate-600">
+                Remember me
+              </label>
             </div>
 
             <button 

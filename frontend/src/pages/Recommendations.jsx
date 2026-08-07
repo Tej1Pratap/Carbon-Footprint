@@ -179,7 +179,7 @@ const Recommendations = () => {
   const fetchData = async () => {
     setLoading(true);
     setError(false);
-    const token = localStorage.getItem('token');
+    const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
     try {
       const [recRes, logsRes] = await Promise.all([
         fetch(import.meta.env.VITE_API_URL + '/api/recommendations', { headers: { 'Authorization': `Bearer ${token}` } }),

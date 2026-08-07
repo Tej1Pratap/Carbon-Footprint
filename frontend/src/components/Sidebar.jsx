@@ -6,7 +6,7 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   
-  const userStr = localStorage.getItem('user');
+  const userStr = (localStorage.getItem('user') || sessionStorage.getItem('user'));
   const user = userStr ? JSON.parse(userStr) : null;
   const isAdmin = user?.role === 'ADMIN';
 
@@ -48,9 +48,13 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
+    if (window.confirm("Are you sure you want to log out?")) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
+      navigate('/login');
+    }
   };
 
   return (
@@ -82,10 +86,14 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
           </button>
         </div>
       
-      <div className="flex-1 overflow-y-auto px-4 space-y-6 scrollbar-hide">
+      <div className="flex-1 overflow-y-auto px-4 space-y-6 scrollbar-hide pb-20">
         {menuGroups.map((group, idx) => (
           <div key={idx} className="space-y-1">
-            {!isCollapsed && <p className="text-[11px] font-bold text-slate-400 tracking-wider mb-2 px-4">{group.title}</p>}
+            {!isCollapsed && (
+              <p className="text-xs font-bold text-slate-700 bg-slate-100/80 py-1.5 px-3 mx-1 rounded-md tracking-wider mb-2 mt-4 uppercase">
+                {group.title}
+              </p>
+            )}
             {group.items.map((item, index) => (
               <NavLink 
                 key={index} 

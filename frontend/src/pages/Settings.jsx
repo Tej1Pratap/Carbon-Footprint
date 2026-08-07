@@ -26,7 +26,7 @@ const Settings = () => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   useEffect(() => {
-    const userStr = localStorage.getItem('user');
+    const userStr = (localStorage.getItem('user') || sessionStorage.getItem('user'));
     if (userStr) {
       const u = JSON.parse(userStr);
       setUser(u);
@@ -52,7 +52,7 @@ const Settings = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
+    const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
     
     // Send all fields to the backend
     const payload = { 
@@ -81,7 +81,7 @@ const Settings = () => {
         setMsg("Settings updated successfully!");
         
         // Update localStorage
-        const userStr = localStorage.getItem('user');
+        const userStr = (localStorage.getItem('user') || sessionStorage.getItem('user'));
         if (userStr) {
           const u = JSON.parse(userStr);
           if (payload.username) u.username = payload.username;
@@ -109,7 +109,7 @@ const Settings = () => {
   };
 
   const handleExportCsv = async () => {
-    const token = localStorage.getItem('token');
+    const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/activity/logs', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -147,7 +147,7 @@ const Settings = () => {
     const confirmed = window.confirm("Are you sure you want to permanently delete your account? This action cannot be undone and all your data will be lost.");
     if (!confirmed) return;
 
-    const token = localStorage.getItem('token');
+    const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
     try {
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/user/delete', {
         method: 'DELETE',

@@ -9,7 +9,7 @@ const ActivityHistory = () => {
 
   useEffect(() => {
     const fetchLogs = async () => {
-      const token = localStorage.getItem('token');
+      const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
       try {
         const res = await fetch(import.meta.env.VITE_API_URL + '/api/activity/logs', {
           headers: { 'Authorization': `Bearer ${token}` }

@@ -53,7 +53,7 @@ const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   
-  const token = localStorage.getItem('token');
+  const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
 
   useEffect(() => {
     if (isOpen && messages.length === 0 && token) {
@@ -129,7 +129,7 @@ const Chatbot = () => {
     setIsTyping(true);
 
     try {
-      const userStr = localStorage.getItem('user');
+      const userStr = (localStorage.getItem('user') || sessionStorage.getItem('user'));
       const user = userStr ? JSON.parse(userStr) : {};
       
       // We pass the user's selected language so the backend knows what to tell the AI

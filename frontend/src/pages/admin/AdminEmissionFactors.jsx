@@ -22,7 +22,7 @@ const AdminEmissionFactors = ({ isDarkMode }) => {
   const fetchFactors = async () => {
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + '/api/admin/emission-factors', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       if (!response.ok) throw new Error('Failed to fetch emission factors');
       const data = await response.json();
@@ -57,7 +57,7 @@ const AdminEmissionFactors = ({ isDarkMode }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}`
         },
         body: JSON.stringify(newFactor)
       });
@@ -77,7 +77,7 @@ const AdminEmissionFactors = ({ isDarkMode }) => {
     try {
       await fetch(import.meta.env.VITE_API_URL + `/api/admin/emission-factors/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       fetchFactors();
     } catch (err) {
