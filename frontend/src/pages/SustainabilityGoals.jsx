@@ -1,5 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { Target, Calendar, BarChart2, CheckCircle2, AlertCircle, ListFilter, TrendingDown } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+
+const GoalTrackingWidget = ({ goal }) => {
+  if (!goal.startDate || !goal.deadline) return null;
+  const startDate = new Date(goal.startDate);
+  const now = new Date();
+  
+  const daysElapsed = Math.max(1, Math.floor((now - startDate) / (1000 * 60 * 60 * 24)));
+  const daysRemaining = Math.max(0, goal.periodDays - daysElapsed);
+  
+  const target = goal.targetKgCo2 || 0;
+  const current = goal.currentEmissions || 0;
+  const projected = goal.projectedEmissions || 0;
+  
+  const remainingAllowance = Math.max(0, target - current);
+  const dailyReductionRequired = daysRemaining > 0 ? (remainingAllowance / daysRemaining) : 0;
+  
+  const idealCurrentTarget = (target / goal.periodDays) * daysElapsed;
+
+  const chartData = [
+    { name: 'Start', Actual: 0, Projected: null, Target: 0 },
+    { name: 'Today', Actual: current, Projected: current, Target: idealCurrentTarget },
+    { name: 'Deadline', Actual: null, Projected: projected, Target: target }
+  ];
+
+  return (
+    <div className="mt-4 border-t pt-5 border-slate-100">
+      <h4 className="text-sm font-bold text-slate-700 mb-4">Goal Tracking Insights</h4>
+      <div className="grid grid-cols-2 gap-4 mb-5">
+        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <p className="text-xs text-slate-500 font-bold uppercase mb-1 tracking-wider">Remaining Allowance</p>
+          <p className="text-xl font-black text-slate-800">{remainingAllowance.toFixed(1)} kg</p>
+        </div>
+        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 shadow-sm">
+          <p className="text-xs text-slate-500 font-bold uppercase mb-1 tracking-wider">Daily Limit Needed</p>
+          <p className={`text-xl font-black ${dailyReductionRequired < (current/daysElapsed) ? 'text-red-500' : 'text-green-600'}`}>
+            {dailyReductionRequired.toFixed(1)} kg/day
+          </p>
+        </div>
+      </div>
+      
+      <div className="h-56 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+            <XAxis dataKey="name" tick={{fontSize: 12, fill: '#64748b', fontWeight: 600}} axisLine={false} tickLine={false} />
+            <YAxis tick={{fontSize: 12, fill: '#64748b'}} axisLine={false} tickLine={false} />
+            <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontWeight: 600 }} />
+            <Legend wrapperStyle={{ fontSize: '12px', fontWeight: 600, marginTop: '10px' }} iconType="circle" />
+            <Line type="monotone" dataKey="Target" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth={2} dot={{r: 4, fill: '#94a3b8'}} name="Target Pathway" />
+            <Line type="monotone" dataKey="Actual" stroke="#10b981" strokeWidth={3} dot={{r: 5, fill: '#10b981', strokeWidth: 2, stroke: '#fff'}} name="Actual Footprint" />
+            <Line type="monotone" dataKey="Projected" stroke="#f59e0b" strokeWidth={3} strokeDasharray="4 4" dot={{r: 5, fill: '#f59e0b', strokeWidth: 2, stroke: '#fff'}} name="Projected Trend" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+};
 
 const SustainabilityGoals = () => {
   const [goals, setGoals] = useState([]);
@@ -157,7 +215,7 @@ const SustainabilityGoals = () => {
                 </div>
 
                 {g.alertMessage && (
-                  <div className={`mt-auto p-3.5 rounded-xl flex items-start gap-3 text-sm font-semibold ${displayStatus === 'ON_TRACK' || displayStatus === 'ACHIEVED' ? 'bg-green-50 text-green-800 border border-green-100' : 'bg-red-50 text-red-800 border border-red-100'}`}>
+                  <div className={`mt-auto mb-2 p-3.5 rounded-xl flex items-start gap-3 text-sm font-semibold ${displayStatus === 'ON_TRACK' || displayStatus === 'ACHIEVED' ? 'bg-green-50 text-green-800 border border-green-100' : 'bg-red-50 text-red-800 border border-red-100'}`}>
                     {displayStatus === 'ON_TRACK' || displayStatus === 'ACHIEVED' ? (
                       <CheckCircle2 className="text-green-600 shrink-0 mt-0.5" size={20} />
                     ) : (
@@ -165,6 +223,10 @@ const SustainabilityGoals = () => {
                     )}
                     <span className="leading-tight">{g.alertMessage}</span>
                   </div>
+                )}
+                
+                {!isFinished && filter === 'ACTIVE' && (
+                  <GoalTrackingWidget goal={g} />
                 )}
               </div>
             );
