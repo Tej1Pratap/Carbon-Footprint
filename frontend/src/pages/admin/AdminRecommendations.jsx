@@ -48,7 +48,7 @@ const AdminRecommendations = ({ isDarkMode }) => {
           <h1 className={`text-3xl font-bold tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>System Recommendations</h1>
           <p className={`mt-1 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Insights into AI-generated suggestions deployed across users.</p>
         </div>
-        <div className={`flex items-center px-4 py-2 rounded-xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200'}`}>
+        <div className={`flex items-center px-4 py-2 rounded-xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
           <Search size={18} className="text-slate-400 mr-2" />
           <input 
             type="text" 
@@ -61,7 +61,7 @@ const AdminRecommendations = ({ isDarkMode }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
           <p className="text-slate-500 text-sm font-semibold mb-1">Total Insights Gen.</p>
           <div className="flex items-center justify-between">
             <h3 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{recommendations.length}</h3>
@@ -70,7 +70,7 @@ const AdminRecommendations = ({ isDarkMode }) => {
         </div>
         
         {topCategories.map(([category, count], idx) => (
-           <div key={idx} className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+           <div key={idx} className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
              <p className="text-slate-500 text-sm font-semibold mb-1 uppercase tracking-wider text-xs">{category} Tips</p>
              <div className="flex items-center justify-between">
                <h3 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{count}</h3>
@@ -80,7 +80,7 @@ const AdminRecommendations = ({ isDarkMode }) => {
         ))}
       </div>
 
-      <div className={`rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200 shadow-sm'} p-6`}>
+      <div className={`rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'} p-6`}>
         <div className="flex items-center justify-between mb-6">
           <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>User Insights Feed</h2>
           <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-bold hover:shadow-lg transition-all shadow-md">

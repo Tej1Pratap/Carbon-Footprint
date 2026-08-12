@@ -139,7 +139,7 @@ const AdminLayout = ({ children }) => {
         {/* Desktop Collapse Toggle on Border */}
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)} 
-          className={`hidden lg:flex absolute -right-3.5 top-7 w-7 h-7 items-center justify-center rounded-full border shadow-sm z-50 transition-all hover:scale-110 ${isDarkMode ? 'bg-gray-800 border-gray-600 text-slate-300 hover:text-white' : 'bg-white border-slate-200 text-slate-500 hover:text-slate-900'}`}
+          className={`hidden lg:flex absolute -right-3.5 top-7 w-7 h-7 items-center justify-center rounded-full border shadow-sm z-50 transition-all hover:scale-110 ${isDarkMode ? 'bg-gray-800 border-gray-600 text-slate-300 hover:text-white' : 'bg-white border-slate-200 shadow-md text-slate-500 hover:text-slate-900'}`}
         >
           {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
         </button>
@@ -214,7 +214,7 @@ const AdminLayout = ({ children }) => {
               </button>
               <AnimatePresence>
                 {showNotifications && (
-                  <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} transition={{ duration: 0.15 }} className={`absolute right-0 mt-3 w-80 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border overflow-hidden z-50 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-100'}`}>
+                  <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} transition={{ duration: 0.15 }} className={`absolute right-0 mt-3 w-80 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border overflow-hidden z-50 ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-100'}`}>
                     <div className="p-4 border-b flex justify-between items-center bg-slate-50/50 dark:bg-gray-900/50 dark:border-gray-700">
                       <h3 className="font-semibold text-sm">Notifications</h3>
                       <button onClick={markAllRead} className="text-xs text-primary font-medium hover:underline">Mark all read</button>
@@ -250,7 +250,7 @@ const AdminLayout = ({ children }) => {
 
               <AnimatePresence>
                 {showProfileDropdown && (
-                  <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} transition={{ duration: 0.15 }} className={`absolute right-0 mt-3 w-56 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border overflow-hidden z-50 p-2 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-100'}`}>
+                  <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} transition={{ duration: 0.15 }} className={`absolute right-0 mt-3 w-56 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border overflow-hidden z-50 p-2 ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-100'}`}>
                     <Link to="/admin/profile" onClick={() => setShowProfileDropdown(false)} className={`flex items-center space-x-3 p-3 rounded-xl transition-colors ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-slate-50'}`}>
                       <UserCircle size={18} className="text-slate-400" />
                       <span className="text-sm font-medium">Profile</span>

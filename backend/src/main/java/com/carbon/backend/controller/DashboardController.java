@@ -64,16 +64,37 @@ public class DashboardController {
             }
             trendMap.forEach((k, v) -> trendData.add(Map.of("name", k, "emissions", v)));
         } else if (timeframe.equals("weekly")) {
-            java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("MMM dd");
-            Map<String, Double> trendMap = new LinkedHashMap<>();
-            for (int i = 6; i >= 0; i--) trendMap.put(now.minusDays(i).format(fmt), 0.0);
+            java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("EEE");
+            Map<String, Map<String, Double>> trendMap = new LinkedHashMap<>();
+            for (int i = 6; i >= 0; i--) {
+                String dayName = now.minusDays(i).format(fmt);
+                Map<String, Double> vals = new HashMap<>();
+                vals.put("current", 0.0);
+                vals.put("last", 0.0);
+                trendMap.put(dayName, vals);
+            }
             for (ActivityLog log : allLogs) {
-                if (log.getLogDate() != null && log.getLogDate().isAfter(now.minusDays(7))) {
-                    String key = log.getLogDate().format(fmt);
-                    if (trendMap.containsKey(key)) trendMap.put(key, trendMap.get(key) + log.getEmissionsKgCo2());
+                if (log.getLogDate() != null) {
+                    if (log.getLogDate().isAfter(now.minusDays(7))) {
+                        String dayName = log.getLogDate().format(fmt);
+                        if (trendMap.containsKey(dayName)) {
+                            trendMap.get(dayName).put("current", trendMap.get(dayName).get("current") + log.getEmissionsKgCo2());
+                        }
+                    } else if (log.getLogDate().isAfter(now.minusDays(14)) && log.getLogDate().isBefore(now.minusDays(7).plusHours(1))) {
+                        String dayName = log.getLogDate().plusDays(7).format(fmt);
+                        if (trendMap.containsKey(dayName)) {
+                            trendMap.get(dayName).put("last", trendMap.get(dayName).get("last") + log.getEmissionsKgCo2());
+                        }
+                    }
                 }
             }
-            trendMap.forEach((k, v) -> trendData.add(Map.of("name", k, "emissions", v)));
+            trendMap.forEach((k, v) -> {
+                Map<String, Object> dayData = new HashMap<>();
+                dayData.put("name", k);
+                dayData.put("current", v.get("current"));
+                dayData.put("last", v.get("last"));
+                trendData.add(dayData);
+            });
         } else if (timeframe.equals("monthly")) {
             Map<String, Double> trendMap = new LinkedHashMap<>();
             for (int i = 4; i >= 1; i--) trendMap.put("Week " + (5 - i), 0.0);

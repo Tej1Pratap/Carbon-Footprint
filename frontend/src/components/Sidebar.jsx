@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, PlusCircle, BarChart2, Target, Lightbulb, Trophy, Award, Clock, Settings, LogOut, User, ChevronsLeft, ChevronsRight, Shield, HelpCircle } from 'lucide-react';
+import { Home, PlusCircle, BarChart2, Target, Lightbulb, Trophy, Award, Clock, Settings, LogOut, User, ChevronsLeft, ChevronsRight, Shield, HelpCircle, Building2 } from 'lucide-react';
 
 const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -118,6 +118,15 @@ const Sidebar = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
             </NavLink>
           </div>
         )}
+        
+        {/* Corporate Link */}
+        <div className="space-y-1 pt-2 border-t border-slate-100 mt-2">
+          {!isCollapsed && <p className="text-[11px] font-bold text-slate-400 tracking-wider mb-2 px-4 mt-2">CORPORATE</p>}
+          <NavLink to="/corporate" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center px-4 py-2.5 rounded-r-xl text-slate-500 hover:bg-blue-50 hover:text-blue-600 border-l-[3px] border-transparent transition-colors group">
+            <Building2 size={20} className="text-blue-400 group-hover:text-blue-600 transition-colors" />
+            {!isCollapsed && <span className="ml-3.5 font-medium text-[15px]">Corporate CSR</span>}
+          </NavLink>
+        </div>
       </div>
 
     </div>

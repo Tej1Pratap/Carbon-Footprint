@@ -540,7 +540,7 @@ export default function Support() {
 
                 {/* Replies */}
                 {selectedTicket.replies?.map((r, i) => (
-                  <div key={i} className={`p-5 rounded-2xl border shadow-sm relative ${r.sender === 'ADMIN' ? 'bg-emerald-50 border-emerald-100 mr-8' : 'bg-white border-slate-200 ml-8'}`}>
+                  <div key={i} className={`p-5 rounded-2xl border shadow-sm relative ${r.sender === 'ADMIN' ? 'bg-emerald-50 border-emerald-100 mr-8' : 'bg-white border-slate-200 shadow-md ml-8'}`}>
                     <div className={`absolute top-0 w-10 h-10 rounded-full flex items-center justify-center font-black text-sm border-2 border-white shadow-sm ${r.sender === 'ADMIN' ? '-right-12 bg-emerald-500 text-white' : '-left-12 bg-slate-200 text-slate-500'}`}>
                       {r.sender === 'ADMIN' ? 'Admin' : 'You'}
                     </div>

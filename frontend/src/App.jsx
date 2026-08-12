@@ -34,6 +34,23 @@ import AdminSupport from './pages/admin/AdminSupport';
 import AdminGoals from './pages/admin/AdminGoals';
 import AdminRecommendations from './pages/admin/AdminRecommendations';
 
+// Corporate
+import CorporateLayout from './layouts/CorporateLayout';
+import CorporateRoute from './components/CorporateRoute';
+import CorporateOnboard from './pages/corporate/CorporateOnboard';
+import CorporateDashboard from './pages/corporate/CorporateDashboard';
+import Departments from './pages/corporate/Departments';
+import Employees from './pages/corporate/Employees';
+import CorporateGoals from './pages/corporate/CorporateGoals';
+import CorporateCSRWrapper from './pages/corporate/CorporateCSRWrapper';
+import CorporateLeaderboard from './pages/corporate/CorporateLeaderboard';
+import CorporateReports from './pages/corporate/CorporateReports';
+import CorporateActivity from './pages/corporate/CorporateActivity';
+import CorporateBadges from './pages/corporate/CorporateBadges';
+import CorporateSupport from './pages/corporate/CorporateSupport';
+import CorporateEmissionFactors from './pages/corporate/CorporateEmissionFactors';
+import CorporateRecommendations from './pages/corporate/CorporateRecommendations';
+
 function App() {
   return (
     <GoogleOAuthProvider clientId="799325987673-f5p5sarodajfm14f9iduhbqr2naeis3s.apps.googleusercontent.com">
@@ -145,6 +162,128 @@ function App() {
               </AdminLayout>
             </AdminRoute>
           } />
+          
+          {/* Corporate Routes */}
+          <Route path="/corporate/onboard" element={<CorporateOnboard />} />
+          <Route path="/corporate" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateDashboard />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/departments" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <Departments />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/employees" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <Employees />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/employee-activity" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateActivity />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/goals" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateGoals />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/csr" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateCSRWrapper />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/benchmarking" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateLeaderboard />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/reports" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateReports />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/badges" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateBadges />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/support" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateSupport />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/emission-factors" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateEmissionFactors />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/recommendations" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateRecommendations />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/emissions" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateDashboard />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          <Route path="/corporate/scopes" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <CorporateDashboard />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          
+          <Route path="/corporate/settings" element={
+            <CorporateRoute>
+              <CorporateLayout>
+                <Settings />
+              </CorporateLayout>
+            </CorporateRoute>
+          } />
+          
+          {/* Corporate Personal Tracking Routes */}
+          <Route path="/corporate/personal/dashboard" element={<CorporateRoute><CorporateLayout><Dashboard /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/activity" element={<CorporateRoute><CorporateLayout><ActivityLogging /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/analytics" element={<CorporateRoute><CorporateLayout><Analytics /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/goals" element={<CorporateRoute><CorporateLayout><SustainabilityGoals /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/recommendations" element={<CorporateRoute><CorporateLayout><Recommendations /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/leaderboard" element={<CorporateRoute><CorporateLayout><Leaderboard /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/badges" element={<CorporateRoute><CorporateLayout><Badges /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/history" element={<CorporateRoute><CorporateLayout><ActivityHistory /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/settings" element={<CorporateRoute><CorporateLayout><Settings /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/profile" element={<CorporateRoute><CorporateLayout><Settings /></CorporateLayout></CorporateRoute>} />
+          <Route path="/corporate/personal/support" element={<CorporateRoute><CorporateLayout><Support /></CorporateLayout></CorporateRoute>} />
           
         </Routes>
       </Router>

@@ -90,7 +90,7 @@ export default function AdminLeaderboard({ isDarkMode }) {
   return (
     <div className={`space-y-6 ${isDarkMode ? 'text-white' : 'text-slate-900'} font-sans`}>
       {/* HEADER & ACTIONS */}
-      <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-white border-slate-200'} shadow-sm flex flex-col lg:flex-row justify-between gap-4`}>
+      <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-white border-slate-200 shadow-md'} shadow-sm flex flex-col lg:flex-row justify-between gap-4`}>
         <div>
           <h1 className="text-3xl font-black flex items-center gap-2">
             <Trophy className="text-yellow-500" /> Leaderboard Engine
@@ -136,7 +136,7 @@ export default function AdminLeaderboard({ isDarkMode }) {
       </div>
 
       {/* ADMIN TABLE */}
-      <div className={`rounded-2xl border overflow-hidden shadow-sm ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+      <div className={`rounded-2xl border overflow-hidden shadow-sm ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-md'}`}>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className={`border-b text-xs uppercase font-bold tracking-wider ${isDarkMode ? 'bg-slate-800/80 border-slate-700 text-slate-400' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
@@ -224,7 +224,7 @@ function UserProfileDrawer({ user, isDarkMode, onClose }) {
       ></motion.div>
       <motion.div 
         initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 25 }}
-        className={`fixed top-0 right-0 h-full w-full max-w-md shadow-2xl z-50 overflow-y-auto border-l flex flex-col ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
+        className={`fixed top-0 right-0 h-full w-full max-w-md shadow-2xl z-50 overflow-y-auto border-l flex flex-col ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-md'}`}
       >
         <div className="relative h-40 bg-gradient-to-br from-emerald-600 to-slate-900">
           <button onClick={onClose} className="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white rounded-full p-2">

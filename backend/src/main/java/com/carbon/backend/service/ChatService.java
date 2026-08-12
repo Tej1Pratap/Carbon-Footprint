@@ -13,6 +13,13 @@ import com.carbon.backend.repository.ChatSessionRepository;
 import com.carbon.backend.repository.UserRepository;
 import com.carbon.backend.repository.ActivityLogRepository;
 import com.carbon.backend.repository.GoalRepository;
+import com.carbon.backend.repository.OrganizationMemberRepository;
+import com.carbon.backend.repository.OrganizationGoalRepository;
+import com.carbon.backend.repository.CSRProjectRepository;
+import com.carbon.backend.model.OrganizationMember;
+import com.carbon.backend.model.Organization;
+import com.carbon.backend.model.OrganizationGoal;
+import com.carbon.backend.model.CSRProject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +34,9 @@ public class ChatService {
     @Autowired private UserRepository userRepository;
     @Autowired private ActivityLogRepository activityLogRepository;
     @Autowired private GoalRepository goalRepository;
+    @Autowired private OrganizationMemberRepository orgMemberRepo;
+    @Autowired private OrganizationGoalRepository orgGoalRepo;
+    @Autowired private CSRProjectRepository csrProjectRepo;
     @Autowired private AiIntegrationService aiIntegrationService;
 
     public ChatSession getOrCreateSession(Long userId) {
@@ -149,31 +159,51 @@ public class ChatService {
             context.append("As an admin assistant, you should help the admin manage the platform, answer questions about system statistics, and provide guidance on admin tools like user management, emission factors, and reports.\n");
             context.append("If the admin asks a data question (like 'how many users logged in'), use the LIVE ANALYTICS provided above. Do not say you don't have the data if it is provided above.\n");
         } else {
-            context.append("You are an AI Sustainability Assistant for a Carbon Footprint tracking app.\n");
-            context.append("User Name: ").append(user.getUsername()).append("\n");
-            context.append("--- USER DATA ---\n");
-            context.append(String.format("Total Activities Logged: %d\n", logs.size()));
-            context.append(String.format("Total Carbon Footprint: %.2f kg CO2\n", totalEmissions));
-            context.append(String.format("Today's Emissions: %.2f kg CO2\n", todayEmissions));
-            context.append(String.format("Yesterday's Emissions: %.2f kg CO2\n", yesterdayEmissions));
-            context.append(String.format("This Week's Emissions: %.2f kg CO2\n", thisWeekEmissions));
-            context.append(String.format("This Month's Emissions: %.2f kg CO2\n", thisMonthEmissions));
-            if (highestEmissionDate != null) {
-                context.append(String.format("Highest Emission Date (Lifetime): %s with %.2f kg CO2\n", highestEmissionDate.toString(), maxDailyEmission));
-            } else {
-                context.append("Highest Emission Date (Lifetime): None\n");
-            }
-            context.append("Active Goals: ").append(goals.size()).append("\n");
+            java.util.Optional<OrganizationMember> memberOpt = orgMemberRepo.findByUserIdAndActiveTrue(user.getId());
+            boolean isOrgAdmin = memberOpt.isPresent() && "ORG_ADMIN".equals(memberOpt.get().getRole());
             
-            if (!recentLogs.isEmpty()) {
-                context.append("5 Most Recent Logged Activities:\n");
-                for (ActivityLog rl : recentLogs) {
-                    context.append(String.format("- %s on %s: %.2f kg CO2\n", rl.getActivityType(), rl.getLogDate().toLocalDate().toString(), rl.getEmissionsKgCo2()));
-                }
+            if (isOrgAdmin) {
+                Organization org = memberOpt.get().getOrganization();
+                List<OrganizationGoal> orgGoals = orgGoalRepo.findByOrganizationId(org.getId());
+                List<CSRProject> orgProjects = csrProjectRepo.findByOrganizationId(org.getId());
+                List<ActivityLog> orgLogs = activityLogRepository.findByOrganizationId(org.getId());
+                double orgTotalEmissions = orgLogs.stream().mapToDouble(ActivityLog::getEmissionsKgCo2).sum();
+                
+                context.append("You are an AI Corporate Sustainability Advisor for the organization: ").append(org.getName()).append(".\n");
+                context.append("User Name: ").append(user.getUsername()).append(" (Corporate Admin)\n");
+                context.append("--- CORPORATE DATA ---\n");
+                context.append(String.format("Organization Total Emissions: %.2f kg CO2\n", orgTotalEmissions));
+                context.append(String.format("Total Corporate Goals: %d\n", orgGoals.size()));
+                context.append(String.format("Total CSR Projects: %d\n", orgProjects.size()));
+                context.append("-----------------\n");
+                context.append("Help the admin manage their corporate footprint, CSR initiatives, and sustainability goals.\n");
             } else {
-                context.append("Recent Activities: None.\n");
+                context.append("You are an AI Sustainability Assistant for a Carbon Footprint tracking app.\n");
+                context.append("User Name: ").append(user.getUsername()).append("\n");
+                context.append("--- USER DATA ---\n");
+                context.append(String.format("Total Activities Logged: %d\n", logs.size()));
+                context.append(String.format("Total Carbon Footprint: %.2f kg CO2\n", totalEmissions));
+                context.append(String.format("Today's Emissions: %.2f kg CO2\n", todayEmissions));
+                context.append(String.format("Yesterday's Emissions: %.2f kg CO2\n", yesterdayEmissions));
+                context.append(String.format("This Week's Emissions: %.2f kg CO2\n", thisWeekEmissions));
+                context.append(String.format("This Month's Emissions: %.2f kg CO2\n", thisMonthEmissions));
+                if (highestEmissionDate != null) {
+                    context.append(String.format("Highest Emission Date (Lifetime): %s with %.2f kg CO2\n", highestEmissionDate.toString(), maxDailyEmission));
+                } else {
+                    context.append("Highest Emission Date (Lifetime): None\n");
+                }
+                context.append("Active Goals: ").append(goals.size()).append("\n");
+                
+                if (!recentLogs.isEmpty()) {
+                    context.append("5 Most Recent Logged Activities:\n");
+                    for (ActivityLog rl : recentLogs) {
+                        context.append(String.format("- %s on %s: %.2f kg CO2\n", rl.getActivityType(), rl.getLogDate().toLocalDate().toString(), rl.getEmissionsKgCo2()));
+                    }
+                } else {
+                    context.append("Recent Activities: None.\n");
+                }
+                context.append("-----------------\n");
             }
-            context.append("-----------------\n");
         }
 
         context.append("\nUser requested language: ").append(request.getLanguage() != null ? request.getLanguage() : "en").append("\n");

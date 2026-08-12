@@ -6,6 +6,8 @@ import com.carbon.backend.model.Badge;
 import com.carbon.backend.repository.ActivityLogRepository;
 import com.carbon.backend.repository.BadgeRepository;
 import com.carbon.backend.repository.UserRepository;
+import com.carbon.backend.model.OrganizationMember;
+import com.carbon.backend.repository.OrganizationMemberRepository;
 import com.carbon.backend.dto.LeaderboardDTOs.LeaderboardEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,18 @@ public class LeaderboardService {
     @Autowired private UserRepository userRepository;
     @Autowired private ActivityLogRepository activityLogRepository;
     @Autowired private BadgeRepository badgeRepository;
+    @Autowired private OrganizationMemberRepository orgMemberRepository;
 
-    public List<LeaderboardEntry> getFullLeaderboard() {
-        List<User> users = userRepository.findAll();
+    public List<LeaderboardEntry> getFullLeaderboard(Long orgId) {
+        List<User> users;
+        if (orgId != null) {
+            users = orgMemberRepository.findByOrganizationIdAndActiveTrue(orgId)
+                    .stream()
+                    .map(OrganizationMember::getUser)
+                    .collect(Collectors.toList());
+        } else {
+            users = userRepository.findAll();
+        }
         List<LeaderboardEntry> entries = new ArrayList<>();
 
         for (User u : users) {

@@ -14,6 +14,7 @@ const Settings = () => {
   const [gender, setGender] = useState('Male');
   const [email, setEmail] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
+  const [password, setPassword] = useState('');
   
   const [emailAlerts, setEmailAlerts] = useState(true);
   const [goalAlerts, setGoalAlerts] = useState(true);
@@ -65,6 +66,7 @@ const Settings = () => {
     };
     
     if (profilePicture) payload.profilePicture = profilePicture;
+    if (password) payload.password = password;
     
     // Reconstruct username from first and last name if they modified it
     const newUsername = `${firstName} ${lastName}`.trim();
@@ -96,6 +98,7 @@ const Settings = () => {
           setUser(u);
           setUsername(u.username);
         }
+        setPassword('');
         setTimeout(() => setMsg(''), 3000);
       } else {
         setMsg("Failed to update settings.");
@@ -181,8 +184,8 @@ const Settings = () => {
 
   return (
     <div className="-mt-10 -mx-10 min-h-[calc(100vh-80px)] font-sans" style={{ backgroundColor: '#f4f6f8' }}>
-      {/* Green Banner */}
-      <div className="w-full h-48 bg-emerald-500"></div>
+      {/* Banner */}
+      <div className={`w-full h-48 ${location.pathname.includes('corporate') ? 'bg-blue-600' : 'bg-emerald-500'}`}></div>
 
       {/* Main Content Area */}
       <div className="relative z-10 flex flex-col lg:flex-row gap-6 px-10 max-w-7xl mx-auto pb-12" style={{ marginTop: '-4rem' }}>
@@ -252,9 +255,7 @@ const Settings = () => {
           )}
           
           <form onSubmit={handleSave}>
-            {!isSettingsPage && (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-8">
               
               {/* First Name */}
               <div className="space-y-1.5">
@@ -316,6 +317,18 @@ const Settings = () => {
                   <input type="email" className="w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-500 text-sm font-medium cursor-not-allowed" value={email} readOnly />
                 </div>
               </div>
+
+              {/* Change Password */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide flex justify-between">
+                  <span>Change Password</span>
+                  <span className="text-[10px] text-gray-400 font-normal normal-case">(Leave blank to keep current)</span>
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-2.5 text-gray-400"><i className="fas fa-lock"></i></span>
+                  <input type="password" placeholder="New Password" value={password} onChange={e => setPassword(e.target.value)} className="w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm font-medium text-gray-700 bg-white" />
+                </div>
+              </div>
             </div>
 
             {/* Sustainability Preferences */}
@@ -337,13 +350,9 @@ const Settings = () => {
                 <i className="fas fa-check-circle mr-1"></i> Share your eco-friendly lifestyle choices (e.g. Vegan diet, Zero-waste).
               </p>
             </div>
-            </>
-            )}
 
-            {isSettingsPage && (
-              <>
             {/* Notification Preferences */}
-            <div className="space-y-4 mb-8 pt-2">
+            <div className="space-y-4 mb-8 pt-6 border-t border-gray-100">
               <div className="flex items-center gap-2 mb-4">
                 <i className="fas fa-bell text-emerald-500 text-lg"></i>
                 <h4 className="text-sm font-bold text-gray-800 uppercase tracking-wide">Notification Preferences</h4>
@@ -442,8 +451,6 @@ const Settings = () => {
                 </button>
               </div>
             </div>
-            </>
-            )}
 
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">

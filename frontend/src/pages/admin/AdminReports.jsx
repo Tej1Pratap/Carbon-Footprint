@@ -114,7 +114,7 @@ const AdminReports = ({ isDarkMode }) => {
               value={timeframe}
               onChange={(e) => setTimeframe(e.target.value)}
               className={`appearance-none pl-4 pr-10 py-2.5 rounded-xl text-sm font-medium border transition-colors outline-none cursor-pointer ${
-                isDarkMode ? 'bg-gray-800 border-gray-700 text-slate-300 hover:border-primary/50' : 'bg-white border-slate-200 text-slate-700 hover:border-primary/50 hover:bg-slate-50'
+                isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20 text-slate-300 hover:border-primary/50' : 'bg-white border-slate-200 shadow-md text-slate-700 hover:border-primary/50 hover:bg-slate-50'
               }`}
             >
               <option value="daily">Today</option>

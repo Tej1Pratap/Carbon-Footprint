@@ -11,4 +11,7 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> 
     void deleteByUserId(Long userId);
 
     long countByLogDateAfter(java.time.LocalDateTime date);
+
+    @org.springframework.data.jpa.repository.Query("SELECT a FROM ActivityLog a, OrganizationMember m WHERE a.user.id = m.user.id AND m.organization.id = :orgId AND m.active = true")
+    List<ActivityLog> findByOrganizationId(@org.springframework.data.repository.query.Param("orgId") Long orgId);
 }

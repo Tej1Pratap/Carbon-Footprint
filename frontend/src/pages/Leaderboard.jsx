@@ -423,10 +423,10 @@ export default function Leaderboard() {
 
 function StatCard({ icon, label, value, trend, color, delay }) {
   const colors = {
-    blue: 'bg-white border-slate-200 text-blue-500',
-    emerald: 'bg-white border-slate-200 text-emerald-500',
-    orange: 'bg-white border-slate-200 text-orange-500',
-    yellow: 'bg-white border-slate-200 text-yellow-500',
+    blue: 'bg-white border-slate-200 shadow-md text-blue-500',
+    emerald: 'bg-white border-slate-200 shadow-md text-emerald-500',
+    orange: 'bg-white border-slate-200 shadow-md text-orange-500',
+    yellow: 'bg-white border-slate-200 shadow-md text-yellow-500',
   };
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} whileHover={{ y: -5 }} className={`p-5 rounded-3xl border shadow-xl shadow-slate-200/50 ${colors[color]} flex flex-col justify-between group overflow-hidden relative`}>

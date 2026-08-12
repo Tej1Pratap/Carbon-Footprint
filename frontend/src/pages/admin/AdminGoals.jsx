@@ -43,7 +43,7 @@ const AdminGoals = ({ isDarkMode }) => {
           <h1 className={`text-3xl font-bold tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Platform Goals</h1>
           <p className={`mt-1 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Monitor and track sustainability goals across all users.</p>
         </div>
-        <div className={`flex items-center px-4 py-2 rounded-xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200'}`}>
+        <div className={`flex items-center px-4 py-2 rounded-xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
           <Search size={18} className="text-slate-400 mr-2" />
           <input 
             type="text" 
@@ -56,28 +56,28 @@ const AdminGoals = ({ isDarkMode }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
           <p className="text-slate-500 text-sm font-semibold mb-1">Total Goals</p>
           <div className="flex items-center justify-between">
             <h3 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{goals.length}</h3>
             <Target size={24} className="text-blue-500" />
           </div>
         </div>
-        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
           <p className="text-slate-500 text-sm font-semibold mb-1">Active (In Progress)</p>
           <div className="flex items-center justify-between">
             <h3 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{activeGoals}</h3>
             <Activity size={24} className="text-purple-500" />
           </div>
         </div>
-        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
           <p className="text-slate-500 text-sm font-semibold mb-1">Successfully Achieved</p>
           <div className="flex items-center justify-between">
             <h3 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{achievedGoals}</h3>
             <CheckCircle2 size={24} className="text-green-500" />
           </div>
         </div>
-        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
           <p className="text-slate-500 text-sm font-semibold mb-1">Failed to Meet</p>
           <div className="flex items-center justify-between">
             <h3 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{failedGoals}</h3>
@@ -86,7 +86,7 @@ const AdminGoals = ({ isDarkMode }) => {
         </div>
       </div>
 
-      <div className={`rounded-2xl border overflow-hidden ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+      <div className={`rounded-2xl border overflow-hidden ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-200 shadow-md'}`}>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>

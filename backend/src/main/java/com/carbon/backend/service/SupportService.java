@@ -21,6 +21,7 @@ public class SupportService {
     @Autowired private EmailService emailService;
     @Autowired private UserRepository userRepository;
     @Autowired private NotificationRepository globalNotifRepo;
+    @Autowired private OrganizationMemberRepository orgMemberRepo;
 
     public List<SupportFAQ> getAllFAQs() {
         return faqRepo.findAllByOrderByDisplayOrderAsc();
@@ -63,8 +64,23 @@ public class SupportService {
         // Notify Admins
         try {
             User creator = userRepository.findById(userId).orElse(null);
-            List<User> admins = userRepository.findAll().stream().filter(u -> "ADMIN".equals(u.getRole())).collect(Collectors.toList());
-            for (User admin : admins) {
+            
+            // Route notification to Corporate Admins if user is in an org, else Super Admins
+            java.util.Optional<OrganizationMember> memberOpt = orgMemberRepo.findByUserIdAndActiveTrue(userId);
+            List<User> targetAdmins = new java.util.ArrayList<>();
+            
+            if (memberOpt.isPresent()) {
+                Long orgId = memberOpt.get().getOrganization().getId();
+                List<OrganizationMember> orgAdmins = orgMemberRepo.findByOrganizationIdAndRole(orgId, "ORG_ADMIN")
+                    .stream().filter(OrganizationMember::isActive).collect(Collectors.toList());
+                for (OrganizationMember orgAdmin : orgAdmins) {
+                    targetAdmins.add(orgAdmin.getUser());
+                }
+            } else {
+                targetAdmins = userRepository.findAll().stream().filter(u -> "ADMIN".equals(u.getRole())).collect(Collectors.toList());
+            }
+
+            for (User admin : targetAdmins) {
                 Notification adminNotif = new Notification();
                 adminNotif.setUser(admin);
                 adminNotif.setType("SUPPORT_TICKET");

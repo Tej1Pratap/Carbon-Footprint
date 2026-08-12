@@ -216,7 +216,7 @@ const AdminUsers = ({ isDarkMode }) => {
                     initial={{ opacity: 0, scale: 0.95, y: -10 }} 
                     animate={{ opacity: 1, scale: 1, y: 0 }} 
                     exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                    className={`absolute right-0 top-12 w-48 rounded-xl shadow-xl border overflow-hidden z-30 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-100'}`}
+                    className={`absolute right-0 top-12 w-48 rounded-xl shadow-xl border overflow-hidden z-30 ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-100'}`}
                   >
                     <div className={`px-4 py-2 text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-400 bg-gray-900/50' : 'text-slate-500 bg-slate-50'}`}>
                       Sort by Date
@@ -283,12 +283,12 @@ const AdminUsers = ({ isDarkMode }) => {
                   <motion.tr initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className={`${isDarkMode ? 'bg-gray-800/80' : 'bg-green-50/30'}`}>
                     <td className="px-6 py-4"></td>
                     <td className="px-6 py-4 flex flex-col space-y-2">
-                      <input type="text" placeholder="Username" value={newUser.username} onChange={e => setNewUser({...newUser, username: e.target.value})} className={`w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-primary/20 outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 text-slate-900'}`} />
-                      <input type="email" placeholder="Email Address" value={newUser.email} onChange={e => setNewUser({...newUser, email: e.target.value})} className={`w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-primary/20 outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 text-slate-900'}`} />
-                      <input type="password" placeholder="Password" value={newUser.password} onChange={e => setNewUser({...newUser, password: e.target.value})} className={`w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-primary/20 outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 text-slate-900'}`} />
+                      <input type="text" placeholder="Username" value={newUser.username} onChange={e => setNewUser({...newUser, username: e.target.value})} className={`w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-primary/20 outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 shadow-md text-slate-900'}`} />
+                      <input type="email" placeholder="Email Address" value={newUser.email} onChange={e => setNewUser({...newUser, email: e.target.value})} className={`w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-primary/20 outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 shadow-md text-slate-900'}`} />
+                      <input type="password" placeholder="Password" value={newUser.password} onChange={e => setNewUser({...newUser, password: e.target.value})} className={`w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-primary/20 outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 shadow-md text-slate-900'}`} />
                     </td>
                     <td className="px-6 py-4 align-top">
-                      <select value={newUser.role} onChange={e => setNewUser({...newUser, role: e.target.value})} className={`w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-primary/20 outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 text-slate-900'}`}>
+                      <select value={newUser.role} onChange={e => setNewUser({...newUser, role: e.target.value})} className={`w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-primary/20 outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 shadow-md text-slate-900'}`}>
                         <option value="USER">USER</option>
                         <option value="ADMIN">ADMIN</option>
                       </select>
@@ -358,7 +358,7 @@ const AdminUsers = ({ isDarkMode }) => {
                             initial={{ opacity: 0, scale: 0.95, y: -10 }} 
                             animate={{ opacity: 1, scale: 1, y: 0 }} 
                             exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                            className={`action-dropdown-menu absolute right-8 top-10 w-48 rounded-xl shadow-xl border overflow-hidden z-20 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-100'}`}
+                            className={`action-dropdown-menu absolute right-8 top-10 w-48 rounded-xl shadow-xl border overflow-hidden z-20 ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-100'}`}
                           >
                             <button className={`w-full flex items-center space-x-3 px-4 py-2.5 text-sm transition-colors ${isDarkMode ? 'text-slate-300 hover:bg-gray-700' : 'text-slate-700 hover:bg-slate-50'}`}>
                               <Edit size={16} /><span>Edit User</span>
@@ -400,7 +400,7 @@ const AdminUsers = ({ isDarkMode }) => {
           <div className={`p-4 border-t flex flex-col sm:flex-row items-center justify-between gap-4 ${isDarkMode ? 'border-gray-700 bg-gray-800/50' : 'border-slate-100 bg-slate-50/50'}`}>
             <div className="flex items-center space-x-3">
               <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Rows per page:</span>
-              <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} className={`text-sm rounded-lg px-2 py-1 border outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 text-slate-700'}`}>
+              <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} className={`text-sm rounded-lg px-2 py-1 border outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 shadow-md text-slate-700'}`}>
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>

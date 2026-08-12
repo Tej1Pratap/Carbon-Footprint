@@ -20,10 +20,24 @@ public class LeaderboardV2Controller {
 
     @Autowired private LeaderboardService leaderboardService;
     @Autowired private UserRepository userRepository;
+    @Autowired private com.carbon.backend.repository.OrganizationMemberRepository orgMemberRepository;
+
+    private Long getOrgId(Authentication auth) {
+        if (auth == null) return null;
+        User user = userRepository.findByEmail(auth.getName()).orElse(null);
+        if (user == null) return null;
+        
+        Optional<com.carbon.backend.model.OrganizationMember> memberOpt = orgMemberRepository.findByUserIdAndActiveTrue(user.getId());
+        if (memberOpt.isPresent()) {
+            return memberOpt.get().getOrganization().getId();
+        }
+        return null;
+    }
 
     @GetMapping
-    public ResponseEntity<?> getLeaderboard() {
-        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard();
+    public ResponseEntity<?> getLeaderboard(Authentication auth) {
+        Long orgId = getOrgId(auth);
+        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard(orgId);
         List<LeaderboardEntry> publicBoard = full.stream()
                 .filter(LeaderboardEntry::getPublicProfile)
                 .collect(Collectors.toList());
@@ -31,8 +45,9 @@ public class LeaderboardV2Controller {
     }
 
     @GetMapping("/top3")
-    public ResponseEntity<?> getTop3() {
-        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard();
+    public ResponseEntity<?> getTop3(Authentication auth) {
+        Long orgId = getOrgId(auth);
+        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard(orgId);
         List<LeaderboardEntry> top3 = full.stream()
                 .filter(LeaderboardEntry::getPublicProfile)
                 .limit(3)
@@ -46,7 +61,8 @@ public class LeaderboardV2Controller {
         User user = userRepository.findByEmail(auth.getName()).orElse(null);
         if (user == null) return ResponseEntity.status(401).build();
 
-        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard();
+        Long orgId = getOrgId(auth);
+        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard(orgId);
         
         Optional<LeaderboardEntry> myEntryOpt = full.stream()
                 .filter(e -> e.getUserId().equals(user.getId()))
@@ -76,8 +92,9 @@ public class LeaderboardV2Controller {
     }
 
     @GetMapping("/profile/{id}")
-    public ResponseEntity<?> getUserProfile(@PathVariable Long id) {
-        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard();
+    public ResponseEntity<?> getUserProfile(@PathVariable Long id, Authentication auth) {
+        Long orgId = getOrgId(auth);
+        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard(orgId);
         Optional<LeaderboardEntry> entry = full.stream()
                 .filter(e -> e.getUserId().equals(id))
                 .findFirst();
@@ -99,8 +116,9 @@ public class LeaderboardV2Controller {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<?> getStats() {
-        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard();
+    public ResponseEntity<?> getStats(Authentication auth) {
+        Long orgId = getOrgId(auth);
+        List<LeaderboardEntry> full = leaderboardService.getFullLeaderboard(orgId);
         CommunityStats stats = new CommunityStats();
         stats.setTotalMembers(full.size());
         stats.setTotalCarbonSaved(full.stream().mapToDouble(LeaderboardEntry::getCarbonEmission).sum());

@@ -349,7 +349,7 @@ const AdminActivity = ({ isDarkMode }) => {
                             initial={{ opacity: 0, scale: 0.95, y: -10 }} 
                             animate={{ opacity: 1, scale: 1, y: 0 }} 
                             exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                            className={`action-dropdown-menu absolute right-8 top-10 w-48 rounded-xl shadow-xl border overflow-hidden z-20 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-slate-100'}`}
+                            className={`action-dropdown-menu absolute right-8 top-10 w-48 rounded-xl shadow-xl border overflow-hidden z-20 ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20' : 'bg-white border-slate-100'}`}
                           >
                             <button className={`w-full flex items-center space-x-3 px-4 py-2.5 text-sm transition-colors ${isDarkMode ? 'text-slate-300 hover:bg-gray-700' : 'text-slate-700 hover:bg-slate-50'}`}>
                               <Edit size={16} /><span>Edit Log</span>
@@ -382,7 +382,7 @@ const AdminActivity = ({ isDarkMode }) => {
           <div className={`p-4 border-t flex flex-col sm:flex-row items-center justify-between gap-4 ${isDarkMode ? 'border-gray-700 bg-gray-800/50' : 'border-slate-100 bg-slate-50/50'}`}>
             <div className="flex items-center space-x-3">
               <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Rows per page:</span>
-              <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} className={`text-sm rounded-lg px-2 py-1 border outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 text-slate-700'}`}>
+              <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))} className={`text-sm rounded-lg px-2 py-1 border outline-none ${isDarkMode ? 'bg-gray-900 border-gray-700 text-white' : 'bg-white border-slate-200 shadow-md text-slate-700'}`}>
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>

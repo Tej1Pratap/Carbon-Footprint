@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { Leaf, Award, Shield, Users, ArrowLeft } from 'lucide-react';
+import { Leaf, Award, Shield, Users, ArrowLeft, Globe, Briefcase } from 'lucide-react';
 import GoogleTranslate from '../components/GoogleTranslate';
 
 const Register = () => {
@@ -44,6 +44,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (loading) return;
+    
     setLoading(true);
     setError('');
     try {
@@ -67,55 +68,59 @@ const Register = () => {
       <div className="absolute top-4 right-4 z-50">
         <GoogleTranslate />
       </div>
-      {/* Left Panel - Green Info Section */}
-      <div className="hidden lg:flex w-1/2 bg-green-600 text-white flex-col justify-between p-12 relative overflow-hidden">
+      {/* Left Panel - Dynamic Info Section */}
+      <div className="hidden lg:flex w-1/2 text-white flex-col justify-between p-12 relative overflow-hidden transition-colors duration-500 bg-green-600">
         {/* Background decorative elements */}
-        <div className="absolute top-[20%] right-[-10%] w-96 h-96 bg-green-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-[20%] right-[-10%] w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob transition-colors duration-500 bg-green-500"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000 transition-colors duration-500 bg-emerald-400"></div>
         
         <div className="relative z-10">
-          <Link to="/" className="inline-flex items-center text-green-100 hover:text-white transition-colors mb-12">
+          <Link to="/" className="inline-flex items-center hover:text-white transition-colors mb-12 text-green-100">
             <ArrowLeft size={16} className="mr-2" />
             Back to Home
           </Link>
           
           <div className="flex items-center space-x-3 mb-16">
-            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-green-600">
+            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center transition-colors duration-500 text-green-600">
               <Leaf size={24} />
             </div>
             <span className="text-2xl font-bold tracking-tight">EcoTrack</span>
           </div>
 
-          <h1 className="text-5xl font-extrabold leading-tight mb-6">
+          <h1 className="text-5xl font-extrabold leading-tight mb-6 transition-all duration-500">
             Start where<br />you are today.
           </h1>
-          <p className="text-green-100 text-lg mb-12 max-w-md leading-relaxed">
+          <p className="text-lg mb-12 max-w-md leading-relaxed transition-colors duration-500 text-green-100">
             Create an account in minutes and get a crystal clear picture of your carbon footprint from day one. Join the movement.
           </p>
 
           <div className="space-y-8">
             <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-green-500/50 rounded-xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm border border-green-400/30">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm border transition-colors duration-500 bg-green-500/50 border-green-400/30">
                 <Shield size={20} className="text-white" />
               </div>
               <div>
                 <h3 className="font-bold text-lg">Secure & Private</h3>
-                <p className="text-green-100 text-sm mt-1">Your data is yours. We just help you analyze it.</p>
+                <p className="text-sm mt-1 transition-colors duration-500 text-green-100">
+                  Your data is yours. We just help you analyze it.
+                </p>
               </div>
             </div>
             <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-green-500/50 rounded-xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm border border-green-400/30">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm border transition-colors duration-500 bg-green-500/50 border-green-400/30">
                 <Users size={20} className="text-white" />
               </div>
               <div>
                 <h3 className="font-bold text-lg">Global Community</h3>
-                <p className="text-green-100 text-sm mt-1">See your impact in the context of thousands of others.</p>
+                <p className="text-sm mt-1 transition-colors duration-500 text-green-100">
+                  See your impact in the context of thousands of others.
+                </p>
               </div>
             </div>
           </div>
         </div>
         
-        <div className="relative z-10 text-green-200 text-sm font-medium">
+        <div className="relative z-10 text-sm font-medium transition-colors duration-500 text-green-200">
           Measure • Reduce • Sustain
         </div>
       </div>
@@ -134,6 +139,8 @@ const Register = () => {
               {error}
             </div>
           )}
+
+
 
           <form onSubmit={handleRegister} className="space-y-5">
             <div>
@@ -175,7 +182,7 @@ const Register = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg shadow-green-600/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+              className="w-full py-3.5 text-white font-bold rounded-xl shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-4 bg-green-600 hover:bg-green-700 shadow-green-600/30"
             >
               {loading ? 'Creating Account...' : 'Sign Up'}
             </button>
