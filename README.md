@@ -41,8 +41,10 @@ A comprehensive, full-stack web application designed to help both individuals an
    ```
 
 2. **Backend Setup:**
-   * Create a MySQL database named `carbon_footprint`.
-   * Open `backend/src/main/resources/application.properties` and update your MySQL username and password.
+   * Create a MySQL database named `carbon_footprint_db`.
+   * Configure your environment variables or create a local properties file:
+     * Refer to `backend/src/main/resources/application.properties.example` for available options.
+     * For local development, you can create `backend/src/main/resources/application-local.properties` (gitignored) to store your local credentials (DB password, Groq API key, Brevo API key, SMTP credentials).
    * Navigate to the `backend` folder and run the Spring Boot application:
      ```bash
      cd backend
@@ -50,13 +52,17 @@ A comprehensive, full-stack web application designed to help both individuals an
      ```
 
 3. **Frontend Setup:**
-   * Open a new terminal and navigate to the `frontend` folder.
-   * Install the dependencies and start the Vite development server:
+   * Navigate to the `frontend` folder:
      ```bash
      cd frontend
      npm install
+     ```
+   * (Optional) Copy `.env.example` to `.env` and set your custom backend URL or Google OAuth client ID.
+   * Start the Vite development server:
+     ```bash
      npm run dev
      ```
+
 
 ## 🤝 Contributing
 Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
