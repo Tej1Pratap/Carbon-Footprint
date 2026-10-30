@@ -73,7 +73,7 @@ const Settings = () => {
     if (newUsername) payload.username = newUsername;
 
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/user/settings', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/user/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(payload)
@@ -114,7 +114,7 @@ const Settings = () => {
   const handleExportCsv = async () => {
     const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/activity/logs', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/activity/logs', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -152,7 +152,7 @@ const Settings = () => {
 
     const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/user/delete', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/user/delete', {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

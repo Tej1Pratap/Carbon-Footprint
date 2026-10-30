@@ -10,7 +10,7 @@ const CorporateReports = ({ isDarkMode }) => {
   const fetchReport = async (deptId = '') => {
     setLoading(true);
     try {
-      let url = import.meta.env.VITE_API_URL + '/api/corporate/reports/summary';
+      let url = (import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/reports/summary';
       if (deptId) url += `?departmentId=${deptId}`;
       const res = await fetch(url, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
@@ -25,7 +25,7 @@ const CorporateReports = ({ isDarkMode }) => {
 
   const fetchDepartments = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/departments', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/departments', {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });
       if (res.ok) setDepartments(await res.json());

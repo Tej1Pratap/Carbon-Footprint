@@ -21,8 +21,8 @@ const Employees = ({ isDarkMode }) => {
       const headers = { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` };
       
       const [empRes, deptRes] = await Promise.all([
-        fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/employees', { headers }),
-        fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/departments', { headers })
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/employees', { headers }),
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/departments', { headers })
       ]);
       
       if (!empRes.ok || !deptRes.ok) throw new Error('Failed to fetch data');
@@ -46,7 +46,7 @@ const Employees = ({ isDarkMode }) => {
       const payload = { email: addEmail, role: selectedRoleForAdd };
       if (selectedDeptForAdd) payload.departmentId = selectedDeptForAdd;
       
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/employees', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/employees', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Employees = ({ isDarkMode }) => {
   const handleAssignDepartment = async (memberId, deptId) => {
     try {
       const payload = deptId ? { departmentId: deptId } : {};
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/corporate/management/employees/${memberId}/department`, {
+      const res = await fetch(`${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/management/employees/${memberId}/department`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const Employees = ({ isDarkMode }) => {
   const handleRemove = async (memberId) => {
     if (!window.confirm('Are you sure you want to remove this employee from the organization?')) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/corporate/management/employees/${memberId}`, {
+      const res = await fetch(`${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/management/employees/${memberId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });

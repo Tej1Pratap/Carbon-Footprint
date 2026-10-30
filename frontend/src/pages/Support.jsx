@@ -43,9 +43,9 @@ export default function Support() {
     try {
       const headers = { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` };
       const [faqRes, ticketRes, statusRes] = await Promise.all([
-        fetch(import.meta.env.VITE_API_URL + '/api/support/faqs', { headers }),
-        fetch(import.meta.env.VITE_API_URL + '/api/support/tickets', { headers }),
-        fetch(import.meta.env.VITE_API_URL + '/api/support/status', { headers })
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/faqs', { headers }),
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/tickets', { headers }),
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/status', { headers })
       ]);
       
       if(faqRes.ok) setFaqs(await faqRes.json());
@@ -64,7 +64,7 @@ export default function Support() {
     setIsSubmitting(true);
     try {
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/support/tickets', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/tickets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export default function Support() {
   const viewTicketDetail = async (id) => {
     try {
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${id}`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/tickets/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -108,7 +108,7 @@ export default function Support() {
   const handleRate = async () => {
     if (ratingStars === 0 || !selectedTicket) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${selectedTicket.ticketId}/rating`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/tickets/${selectedTicket.ticketId}/rating`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ stars: ratingStars, comment: ratingComment })
@@ -125,7 +125,7 @@ export default function Support() {
   const changeStatus = async (status) => {
     if (!selectedTicket) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${selectedTicket.ticketId}/status`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/tickets/${selectedTicket.ticketId}/status`, {
         method: 'PATCH',
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })
@@ -142,7 +142,7 @@ export default function Support() {
     if (!replyMessage.trim()) return;
     try {
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${selectedTicket.ticketId}/reply`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/tickets/${selectedTicket.ticketId}/reply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

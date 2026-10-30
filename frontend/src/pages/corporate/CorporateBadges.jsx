@@ -30,7 +30,7 @@ const CorporateBadges = ({ isDarkMode }) => {
 
   const fetchBadges = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/badges', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/badges', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       if (res.ok) {
@@ -42,7 +42,7 @@ const CorporateBadges = ({ isDarkMode }) => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/employees', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/employees', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       if (res.ok) {
@@ -58,7 +58,7 @@ const CorporateBadges = ({ isDarkMode }) => {
   const handleAwardSubmit = async () => {
     if (!awardForm.userId) return alert('Select a user');
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/badges/award', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/badges/award', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const CorporateBadges = ({ isDarkMode }) => {
 
   const handleRevoke = async (id) => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/corporate/management/badges/${id}`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/corporate/management/badges/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });

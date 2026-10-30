@@ -13,7 +13,7 @@ const ForgotPassword = () => {
     setMessage('');
     setLoading(true);
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/auth/forget-password', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/auth/forget-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

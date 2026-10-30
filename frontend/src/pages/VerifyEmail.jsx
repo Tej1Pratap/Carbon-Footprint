@@ -36,7 +36,7 @@ const VerifyEmail = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/auth/verify-email', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/auth/verify-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code }),
@@ -63,7 +63,7 @@ const VerifyEmail = () => {
     setCountdown(60);
 
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/auth/resend-verification', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/auth/resend-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

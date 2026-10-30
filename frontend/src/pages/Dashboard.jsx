@@ -23,7 +23,7 @@ const Dashboard = () => {
       setError(null);
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
       try {
-        const res = await fetch(import.meta.env.VITE_API_URL + `/api/dashboard/overview?timeframe=${timeframe}`, {
+        const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/dashboard/overview?timeframe=${timeframe}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {

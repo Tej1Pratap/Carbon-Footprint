@@ -16,7 +16,7 @@ const Register = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/auth/google', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: credentialResponse.credential }),
@@ -48,7 +48,7 @@ const Register = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/auth/register', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),

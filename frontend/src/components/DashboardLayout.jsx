@@ -35,7 +35,7 @@ const DashboardLayout = ({ children }) => {
   const fetchNotifications = async () => {
     try {
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/notifications', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/notifications', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) setNotifications(await res.json());
@@ -55,7 +55,7 @@ const DashboardLayout = ({ children }) => {
   const markAsRead = async (id) => {
     try {
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
-      await fetch(import.meta.env.VITE_API_URL + `/api/notifications/${id}/read`, {
+      await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/notifications/${id}/read`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -66,7 +66,7 @@ const DashboardLayout = ({ children }) => {
   const markAllAsRead = async () => {
     try {
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
-      await fetch(import.meta.env.VITE_API_URL + `/api/notifications/read-all`, {
+      await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/notifications/read-all`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });

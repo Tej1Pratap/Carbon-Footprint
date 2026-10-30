@@ -36,7 +36,7 @@ const AdminUsers = ({ isDarkMode }) => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/admin/users', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/users', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       const data = await res.json();
@@ -49,7 +49,7 @@ const AdminUsers = ({ isDarkMode }) => {
   const handleBulkAction = async (action, ids = selectedIds) => {
     if (!ids.length) return;
     try {
-      await fetch(import.meta.env.VITE_API_URL + '/api/admin/users/bulk-action', {
+      await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/users/bulk-action', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ const AdminUsers = ({ isDarkMode }) => {
 
   const handleAddSubmit = async () => {
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/auth/register', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser)

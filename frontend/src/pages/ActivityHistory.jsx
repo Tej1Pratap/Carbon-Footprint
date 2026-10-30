@@ -11,7 +11,7 @@ const ActivityHistory = () => {
     const fetchLogs = async () => {
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
       try {
-        const res = await fetch(import.meta.env.VITE_API_URL + '/api/activity/logs', {
+        const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/activity/logs', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) setLogs(await res.json());

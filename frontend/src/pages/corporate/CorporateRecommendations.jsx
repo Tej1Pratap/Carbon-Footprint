@@ -13,7 +13,7 @@ const CorporateRecommendations = ({ isDarkMode }) => {
   const fetchRecommendations = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/recommendations', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/recommendations', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       if (response.ok) {

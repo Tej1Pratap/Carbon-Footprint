@@ -68,7 +68,7 @@ const SustainabilityGoals = () => {
 
   const fetchGoals = async () => {
     const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
-    const res = await fetch(import.meta.env.VITE_API_URL + '/api/goals', { headers: { 'Authorization': `Bearer ${token}` } });
+    const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/goals', { headers: { 'Authorization': `Bearer ${token}` } });
     if (res.ok) setGoals(await res.json());
   };
 
@@ -77,7 +77,7 @@ const SustainabilityGoals = () => {
   const handleAdd = async (e) => {
     e.preventDefault();
     const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
-    await fetch(import.meta.env.VITE_API_URL + '/api/goals', {
+    await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/goals', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify({ 

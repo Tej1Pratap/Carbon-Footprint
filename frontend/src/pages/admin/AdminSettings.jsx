@@ -20,7 +20,7 @@ const AdminSettings = ({ isDarkMode }) => {
   const fetchSettings = async () => {
     setLoading(true);
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/admin/settings', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/settings', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       const data = await res.json();
@@ -47,7 +47,7 @@ const AdminSettings = ({ isDarkMode }) => {
     try {
       // Save each setting iteratively
       for (const [key, value] of Object.entries(settings)) {
-        await fetch(import.meta.env.VITE_API_URL + '/api/admin/settings', {
+        await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/settings', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

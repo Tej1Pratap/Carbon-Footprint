@@ -30,7 +30,7 @@ const AdminBadges = ({ isDarkMode }) => {
 
   const fetchBadges = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/badges/all', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/badges/all', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       if (res.ok) {
@@ -42,7 +42,7 @@ const AdminBadges = ({ isDarkMode }) => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/admin/users', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/users', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       if (res.ok) {
@@ -58,7 +58,7 @@ const AdminBadges = ({ isDarkMode }) => {
   const handleAwardSubmit = async () => {
     if (!awardForm.userId) return alert('Select a user');
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/badges/award', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/badges/award', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const AdminBadges = ({ isDarkMode }) => {
 
   const handleRevoke = async (id) => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/badges/${id}`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/badges/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });

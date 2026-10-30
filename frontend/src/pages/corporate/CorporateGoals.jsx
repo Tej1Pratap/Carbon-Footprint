@@ -17,7 +17,7 @@ const CorporateGoals = ({ isDarkMode }) => {
   const fetchGoals = async () => {
     try {
       setLoading(true);
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/goals', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/goals', {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });
       if (res.ok) setGoals(await res.json());
@@ -42,7 +42,7 @@ const CorporateGoals = ({ isDarkMode }) => {
         deadline: formData.deadline
       };
       
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/goals', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/goals', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const CorporateGoals = ({ isDarkMode }) => {
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/corporate/goals/${id}`, {
+      const res = await fetch(`${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/goals/${id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const CorporateGoals = ({ isDarkMode }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this goal?')) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/corporate/goals/${id}`, {
+      const res = await fetch(`${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/goals/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });

@@ -21,7 +21,7 @@ const AdminEmissionFactors = ({ isDarkMode }) => {
 
   const fetchFactors = async () => {
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/admin/emission-factors', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/emission-factors', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       if (!response.ok) throw new Error('Failed to fetch emission factors');
@@ -53,7 +53,7 @@ const AdminEmissionFactors = ({ isDarkMode }) => {
 
   const handleAddSubmit = async () => {
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/admin/emission-factors', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/emission-factors', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const AdminEmissionFactors = ({ isDarkMode }) => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(import.meta.env.VITE_API_URL + `/api/admin/emission-factors/${id}`, {
+      await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/admin/emission-factors/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });

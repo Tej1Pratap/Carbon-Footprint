@@ -14,7 +14,7 @@ const CSRDashboard = ({ isDarkMode }) => {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/csr/projects', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/csr/projects', {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });
       if (res.ok) setProjects(await res.json());
@@ -33,8 +33,8 @@ const CSRDashboard = ({ isDarkMode }) => {
     e.preventDefault();
     try {
       const url = editingProject 
-        ? `${import.meta.env.VITE_API_URL}/api/corporate/csr/projects/${editingProject.id}`
-        : `${import.meta.env.VITE_API_URL}/api/corporate/csr/projects`;
+        ? `${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/csr/projects/${editingProject.id}`
+        : `${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/csr/projects`;
       const method = editingProject ? 'PUT' : 'POST';
       
       const payload = {
@@ -66,7 +66,7 @@ const CSRDashboard = ({ isDarkMode }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this CSR project? All participation data will also be deleted.')) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/corporate/csr/projects/${id}`, {
+      const res = await fetch(`${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/csr/projects/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });

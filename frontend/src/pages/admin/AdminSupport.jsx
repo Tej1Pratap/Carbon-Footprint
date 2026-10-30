@@ -64,28 +64,28 @@ const AdminSupport = () => {
 
   const fetchDashboard = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/support/admin/dashboard', { headers: getHeaders() });
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/admin/dashboard', { headers: getHeaders() });
       if (res.ok) setDashboard(await res.json());
     } catch (e) {}
   };
 
   const fetchTickets = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/support/admin/tickets', { headers: getHeaders() });
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/admin/tickets', { headers: getHeaders() });
       if (res.ok) setTickets(await res.json());
     } catch (e) {}
   };
 
   const fetchFaqs = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/support/faqs', { headers: getHeaders() });
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/faqs', { headers: getHeaders() });
       if (res.ok) setFaqs(await res.json());
     } catch (e) {}
   };
 
   const fetchTicketDetails = async (id) => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${id}`, { headers: getHeaders() });
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/tickets/${id}`, { headers: getHeaders() });
       if (res.ok) {
         setSelectedTicket(await res.json());
         setIsModalOpen(true);
@@ -96,7 +96,7 @@ const AdminSupport = () => {
   const handleReply = async () => {
     if (!replyMessage.trim() || !selectedTicket) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${selectedTicket.ticketId}/reply`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/tickets/${selectedTicket.ticketId}/reply`, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({ message: replyMessage, isInternalNote })
@@ -112,7 +112,7 @@ const AdminSupport = () => {
   const changeStatus = async (status) => {
     if (!selectedTicket) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/tickets/${selectedTicket.ticketId}/status`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/tickets/${selectedTicket.ticketId}/status`, {
         method: 'PATCH',
         headers: getHeaders(),
         body: JSON.stringify({ status })
@@ -128,7 +128,7 @@ const AdminSupport = () => {
   const handleFaqSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = editingFaq ? import.meta.env.VITE_API_URL + `/api/support/faqs/${editingFaq.id}` : import.meta.env.VITE_API_URL + '/api/support/faqs';
+      const url = editingFaq ? (import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/faqs/${editingFaq.id}` : (import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/faqs';
       const method = editingFaq ? 'PUT' : 'POST';
       
       const res = await fetch(url, {
@@ -149,7 +149,7 @@ const AdminSupport = () => {
   const deleteFaq = async (id) => {
     if (!window.confirm('Are you sure you want to delete this FAQ?')) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/support/faqs/${id}`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/support/faqs/${id}`, {
         method: 'DELETE',
         headers: getHeaders()
       });

@@ -91,7 +91,7 @@ const PublicChatbot = () => {
         language: 'en'
       };
 
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/chat/public', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/chat/public', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json'

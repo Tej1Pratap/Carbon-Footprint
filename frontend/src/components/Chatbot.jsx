@@ -71,7 +71,7 @@ const Chatbot = () => {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/chat/history', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/chat/history', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -80,7 +80,7 @@ const Chatbot = () => {
           setMessages(data);
         } else {
           // Initialize session and show greeting
-          await fetch(import.meta.env.VITE_API_URL + '/api/chat/session', {
+          await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/chat/session', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` }
           });
@@ -99,7 +99,7 @@ const Chatbot = () => {
 
   const clearHistory = async () => {
     try {
-      await fetch(import.meta.env.VITE_API_URL + '/api/chat/history', {
+      await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/chat/history', {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -138,7 +138,7 @@ const Chatbot = () => {
         language: 'en' // Defaulting to English, could be fetched from user prefs
       };
 
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/chat/send', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/chat/send', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

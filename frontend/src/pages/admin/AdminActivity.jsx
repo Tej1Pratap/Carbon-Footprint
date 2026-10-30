@@ -29,7 +29,7 @@ const AdminActivity = ({ isDarkMode }) => {
 
   const fetchActivities = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/admin/activities', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/activities', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       const data = await res.json();
@@ -42,7 +42,7 @@ const AdminActivity = ({ isDarkMode }) => {
   const handleBulkAction = async (action, ids = selectedIds) => {
     if (!ids.length) return;
     try {
-      await fetch(import.meta.env.VITE_API_URL + '/api/admin/activities/bulk-action', {
+      await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/activities/bulk-action', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

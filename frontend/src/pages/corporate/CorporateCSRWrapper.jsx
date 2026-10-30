@@ -9,7 +9,7 @@ const CorporateCSRWrapper = ({ isDarkMode }) => {
   useEffect(() => {
     const fetchRole = async () => {
       try {
-        const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/organization/me', {
+        const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/organization/me', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
         });
         if (res.ok) {

@@ -20,7 +20,7 @@ const AdminDashboard = ({ isDarkMode }) => {
   const fetchStats = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/admin/dashboard/stats', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/admin/dashboard/stats', {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       const data = await response.json();
@@ -34,7 +34,7 @@ const AdminDashboard = ({ isDarkMode }) => {
 
   const fetchTrendData = async () => {
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + `/api/admin/reports/analytics?timeframe=${timeframe}`, {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/admin/reports/analytics?timeframe=${timeframe}`, {
         headers: { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` }
       });
       if (response.ok) {

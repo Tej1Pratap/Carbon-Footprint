@@ -14,12 +14,12 @@ const Analytics = () => {
     const fetchData = async () => {
       const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
       try {
-        const res = await fetch(import.meta.env.VITE_API_URL + `/api/analytics/summary?timeframe=${timeframe}`, {
+        const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/analytics/summary?timeframe=${timeframe}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) setData(await res.json());
 
-        const benchRes = await fetch(import.meta.env.VITE_API_URL + '/api/analytics/benchmark', {
+        const benchRes = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/analytics/benchmark', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (benchRes.ok) setBenchmark(await benchRes.json());

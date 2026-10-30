@@ -60,28 +60,28 @@ const CorporateSupport = () => {
 
   const fetchDashboard = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/support/dashboard', { headers: getHeaders() });
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/support/dashboard', { headers: getHeaders() });
       if (res.ok) setDashboard(await res.json());
     } catch (e) {}
   };
 
   const fetchTickets = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/support/tickets', { headers: getHeaders() });
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/support/tickets', { headers: getHeaders() });
       if (res.ok) setTickets(await res.json());
     } catch (e) {}
   };
 
   const fetchFaqs = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/support/faqs', { headers: getHeaders() });
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/support/faqs', { headers: getHeaders() });
       if (res.ok) setFaqs(await res.json());
     } catch (e) {}
   };
 
   const fetchTicketDetails = async (id) => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/corporate/management/support/tickets/${id}`, { headers: getHeaders() });
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/corporate/management/support/tickets/${id}`, { headers: getHeaders() });
       if (res.ok) {
         setSelectedTicket(await res.json());
         setIsModalOpen(true);
@@ -92,7 +92,7 @@ const CorporateSupport = () => {
   const handleReply = async () => {
     if (!replyMessage.trim() || !selectedTicket) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/corporate/management/support/tickets/${selectedTicket.ticketId}/reply`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/corporate/management/support/tickets/${selectedTicket.ticketId}/reply`, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify({ message: replyMessage, isInternalNote })
@@ -108,7 +108,7 @@ const CorporateSupport = () => {
   const changeStatus = async (status) => {
     if (!selectedTicket) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/corporate/management/support/tickets/${selectedTicket.ticketId}/status`, {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + `/api/corporate/management/support/tickets/${selectedTicket.ticketId}/status`, {
         method: 'PATCH',
         headers: getHeaders(),
         body: JSON.stringify({ status })

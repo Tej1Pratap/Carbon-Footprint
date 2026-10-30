@@ -182,8 +182,8 @@ const Recommendations = () => {
     const token = (localStorage.getItem('token') || sessionStorage.getItem('token'));
     try {
       const [recRes, logsRes] = await Promise.all([
-        fetch(import.meta.env.VITE_API_URL + '/api/recommendations', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch(import.meta.env.VITE_API_URL + '/api/activity/logs', { headers: { 'Authorization': `Bearer ${token}` } })
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/recommendations', { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/activity/logs', { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
       
       if (recRes.ok && logsRes.ok) {

@@ -26,7 +26,7 @@ const CorporateOnboard = () => {
         
         try {
             const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-            const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/organization/onboard', {
+            const res = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/organization/onboard', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

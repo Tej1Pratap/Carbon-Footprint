@@ -17,8 +17,8 @@ const EmployeeCSR = ({ isDarkMode }) => {
       const headers = { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` };
       
       const [projRes, partRes] = await Promise.all([
-        fetch(import.meta.env.VITE_API_URL + '/api/corporate/csr/projects', { headers }),
-        fetch(import.meta.env.VITE_API_URL + '/api/corporate/csr/my-participations', { headers })
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/csr/projects', { headers }),
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/csr/my-participations', { headers })
       ]);
       
       if (projRes.ok) setProjects(await projRes.json());
@@ -36,7 +36,7 @@ const EmployeeCSR = ({ isDarkMode }) => {
 
   const handleJoin = async (id) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/corporate/csr/projects/${id}/join`, {
+      const res = await fetch(`${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/csr/projects/${id}/join`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });
@@ -54,7 +54,7 @@ const EmployeeCSR = ({ isDarkMode }) => {
   const handleLogHours = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/corporate/csr/projects/${activeProjectId}/log-hours`, {
+      const res = await fetch(`${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/csr/projects/${activeProjectId}/log-hours`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

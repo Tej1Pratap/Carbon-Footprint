@@ -31,8 +31,8 @@ export default function AdminLeaderboard({ isDarkMode }) {
     try {
       const headers = { 'Authorization': `Bearer ${(localStorage.getItem('token') || sessionStorage.getItem('token'))}` };
       const [boardRes, statsRes] = await Promise.all([
-        fetch(import.meta.env.VITE_API_URL + '/api/v2/leaderboard', { headers }),
-        fetch(import.meta.env.VITE_API_URL + '/api/v2/leaderboard/stats', { headers })
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/v2/leaderboard', { headers }),
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/v2/leaderboard/stats', { headers })
       ]);
       if (boardRes.ok) setBoard(await boardRes.json());
       if (statsRes.ok) setStats(await statsRes.json());

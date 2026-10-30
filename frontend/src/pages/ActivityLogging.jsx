@@ -84,7 +84,7 @@ const ActivityLogging = () => {
       const finalCategory = category === 'Other' ? customCategory : category;
       const finalActivityType = activityType === 'Other' ? customActivityType : activityType;
 
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/activity/log', {
+      const response = await fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/activity/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ 

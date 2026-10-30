@@ -42,8 +42,8 @@ const CorporateDashboard = ({ isDarkMode }) => {
       try {
         const headers = { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` };
         const [dashRes, deptRes] = await Promise.all([
-          fetch(import.meta.env.VITE_API_URL + '/api/corporate/analytics/dashboard', { headers }),
-          fetch(import.meta.env.VITE_API_URL + '/api/corporate/analytics/departments', { headers })
+          fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/analytics/dashboard', { headers }),
+          fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/analytics/departments', { headers })
         ]);
         
         if (dashRes.ok) {

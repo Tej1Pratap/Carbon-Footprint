@@ -22,8 +22,8 @@ const Departments = ({ isDarkMode }) => {
       const headers = { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` };
       
       const [deptRes, empRes] = await Promise.all([
-        fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/departments', { headers }),
-        fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/employees', { headers })
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/departments', { headers }),
+        fetch((import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com') + '/api/corporate/management/employees', { headers })
       ]);
       
       if (!deptRes.ok || !empRes.ok) throw new Error('Failed to fetch data');
@@ -45,8 +45,8 @@ const Departments = ({ isDarkMode }) => {
     e.preventDefault();
     try {
       const url = editingDept 
-        ? `${import.meta.env.VITE_API_URL}/api/corporate/management/departments/${editingDept.id}`
-        : `${import.meta.env.VITE_API_URL}/api/corporate/management/departments`;
+        ? `${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/management/departments/${editingDept.id}`
+        : `${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/management/departments`;
       const method = editingDept ? 'PUT' : 'POST';
       
       const res = await fetch(url, {
@@ -75,7 +75,7 @@ const Departments = ({ isDarkMode }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to deactivate this department?')) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/corporate/management/departments/${id}`, {
+      const res = await fetch(`${(import.meta.env.VITE_API_URL || 'https://carbon-footprint-syb5.onrender.com')}/api/corporate/management/departments/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });
