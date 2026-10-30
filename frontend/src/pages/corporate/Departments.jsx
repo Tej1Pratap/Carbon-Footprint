@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, Plus, Edit2, Trash2, Search, Building2, Users } from 'lucide-react';
+import { Briefcase, Plus, Edit2, Trash2, Search, Building2, Users, X, Mail } from 'lucide-react';
 
 const Departments = ({ isDarkMode }) => {
   const [departments, setDepartments] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
@@ -11,16 +12,24 @@ const Departments = ({ isDarkMode }) => {
   const [formData, setFormData] = useState({ name: '', description: '' });
   
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // State for viewing employees in a department
+  const [viewingDept, setViewingDept] = useState(null);
 
-  const fetchDepartments = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/departments', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
-      });
-      if (!res.ok) throw new Error('Failed to fetch departments');
-      const data = await res.json();
-      setDepartments(data);
+      const headers = { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` };
+      
+      const [deptRes, empRes] = await Promise.all([
+        fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/departments', { headers }),
+        fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/employees', { headers })
+      ]);
+      
+      if (!deptRes.ok || !empRes.ok) throw new Error('Failed to fetch data');
+      
+      setDepartments(await deptRes.json());
+      setEmployees(await empRes.json());
     } catch (err) {
       setError(err.message);
     } finally {
@@ -29,7 +38,7 @@ const Departments = ({ isDarkMode }) => {
   };
 
   useEffect(() => {
-    fetchDepartments();
+    fetchData();
   }, []);
 
   const handleSave = async (e) => {
@@ -57,7 +66,7 @@ const Departments = ({ isDarkMode }) => {
       setShowModal(false);
       setEditingDept(null);
       setFormData({ name: '', description: '' });
-      fetchDepartments();
+      fetchData();
     } catch (err) {
       alert(err.message);
     }
@@ -71,7 +80,7 @@ const Departments = ({ isDarkMode }) => {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}` }
       });
       if (!res.ok) throw new Error('Failed to delete');
-      fetchDepartments();
+      fetchData();
     } catch (err) {
       alert(err.message);
     }
@@ -90,6 +99,11 @@ const Departments = ({ isDarkMode }) => {
 
   const filteredDepts = departments.filter(d => d.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
+  // Get employees for a specific department
+  const getEmployeesInDept = (deptId) => {
+    return employees.filter(emp => emp.department && emp.department.id === deptId);
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -97,7 +111,7 @@ const Departments = ({ isDarkMode }) => {
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight">Departments</h1>
           <p className={`mt-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
-            Manage your organization's departmental structure.
+            Manage your organization's departmental structure and view assigned employees.
           </p>
         </div>
         <button 
@@ -141,38 +155,50 @@ const Departments = ({ isDarkMode }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredDepts.map(dept => (
-            <div key={dept.id} className={`group flex flex-col p-6 rounded-3xl border transition-all hover:shadow-xl hover:-translate-y-1 ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20 hover:shadow-purple-900/10 hover:border-purple-500/30' : 'bg-white border-slate-200 shadow-md hover:shadow-purple-500/5 hover:border-purple-200'}`}>
-              <div className="flex justify-between items-start mb-4">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${isDarkMode ? 'bg-gray-700 text-purple-400 group-hover:bg-purple-900/30 group-hover:text-purple-300' : 'bg-purple-50 text-purple-600 group-hover:bg-purple-100 group-hover:text-purple-700'}`}>
-                  <Briefcase size={24} />
+          {filteredDepts.map(dept => {
+            const deptEmployees = getEmployeesInDept(dept.id);
+            return (
+              <div key={dept.id} className={`group flex flex-col p-6 rounded-3xl border transition-all hover:shadow-xl hover:-translate-y-1 ${isDarkMode ? 'bg-gray-800 border-gray-700 shadow-md shadow-black/20 hover:shadow-purple-900/10 hover:border-purple-500/30' : 'bg-white border-slate-200 shadow-md hover:shadow-purple-500/5 hover:border-purple-200'}`}>
+                <div className="flex justify-between items-start mb-4">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${isDarkMode ? 'bg-gray-700 text-purple-400 group-hover:bg-purple-900/30 group-hover:text-purple-300' : 'bg-purple-50 text-purple-600 group-hover:bg-purple-100 group-hover:text-purple-700'}`}>
+                    <Briefcase size={24} />
+                  </div>
+                  <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={() => openModal(dept)} className={`p-1.5 rounded-lg transition-colors ${isDarkMode ? 'hover:bg-gray-700 text-gray-400 hover:text-blue-400' : 'hover:bg-slate-100 text-slate-400 hover:text-blue-600'}`}>
+                      <Edit2 size={16} />
+                    </button>
+                    <button onClick={() => handleDelete(dept.id)} className={`p-1.5 rounded-lg transition-colors ${isDarkMode ? 'hover:bg-gray-700 text-gray-400 hover:text-red-400' : 'hover:bg-slate-100 text-slate-400 hover:text-red-600'}`}>
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => openModal(dept)} className={`p-1.5 rounded-lg transition-colors ${isDarkMode ? 'hover:bg-gray-700 text-gray-400 hover:text-blue-400' : 'hover:bg-slate-100 text-slate-400 hover:text-blue-600'}`}>
-                    <Edit2 size={16} />
-                  </button>
-                  <button onClick={() => handleDelete(dept.id)} className={`p-1.5 rounded-lg transition-colors ${isDarkMode ? 'hover:bg-gray-700 text-gray-400 hover:text-red-400' : 'hover:bg-slate-100 text-slate-400 hover:text-red-600'}`}>
-                    <Trash2 size={16} />
+                
+                <h3 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{dept.name}</h3>
+                <p className={`text-sm mb-6 flex-1 line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                  {dept.description || 'No description provided.'}
+                </p>
+                
+                <div className={`pt-4 border-t flex items-center justify-between text-sm ${isDarkMode ? 'border-gray-700' : 'border-slate-100'}`}>
+                  <div className="flex items-center space-x-1.5">
+                    <Users size={16} className={isDarkMode ? 'text-gray-400' : 'text-slate-400'} />
+                    <span className={`font-semibold ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>{deptEmployees.length} Employees</span>
+                  </div>
+                  <button 
+                    onClick={() => setViewingDept(dept)}
+                    className={`font-semibold transition-colors ${isDarkMode ? 'text-purple-400 hover:text-purple-300' : 'text-purple-600 hover:text-purple-700'}`}
+                  >
+                    View All
                   </button>
                 </div>
               </div>
-              
-              <h3 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{dept.name}</h3>
-              <p className={`text-sm mb-6 flex-1 line-clamp-2 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
-                {dept.description || 'No description provided.'}
-              </p>
-              
-              <div className={`pt-4 border-t flex items-center justify-between text-sm ${isDarkMode ? 'border-gray-700' : 'border-slate-100'}`}>
-                <span className={`font-medium ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>Status: Active</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
-      {/* Modal */}
+      {/* Add/Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
           <div className={`w-full max-w-md p-6 rounded-3xl shadow-2xl ${isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white'}`}>
             <h2 className={`text-xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
               {editingDept ? 'Edit Department' : 'Add Department'}
@@ -208,6 +234,69 @@ const Departments = ({ isDarkMode }) => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* View Employees Modal */}
+      {viewingDept && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+          <div className={`w-full max-w-2xl p-6 rounded-3xl shadow-2xl flex flex-col max-h-[85vh] ${isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white'}`}>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className={`text-xl font-bold flex items-center ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>
+                  <Building2 size={22} className="mr-2 text-purple-500" />
+                  {viewingDept.name}
+                </h2>
+                <p className={`text-sm mt-1 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                  {getEmployeesInDept(viewingDept.id).length} Employees Assigned
+                </p>
+              </div>
+              <button 
+                onClick={() => setViewingDept(null)}
+                className={`p-2 rounded-full transition-colors ${isDarkMode ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-slate-100 text-slate-500'}`}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className={`flex-1 overflow-y-auto rounded-xl border ${isDarkMode ? 'border-gray-700 bg-gray-900/30' : 'border-slate-200 bg-slate-50/50'}`}>
+              {getEmployeesInDept(viewingDept.id).length === 0 ? (
+                <div className="p-8 text-center">
+                  <p className={isDarkMode ? 'text-gray-500' : 'text-slate-400'}>No employees have been assigned to this department yet.</p>
+                </div>
+              ) : (
+                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {getEmployeesInDept(viewingDept.id).map(emp => (
+                    <li key={emp.memberId} className={`p-4 flex items-center justify-between transition-colors ${isDarkMode ? 'hover:bg-gray-800' : 'hover:bg-white'}`}>
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white ${emp.role === 'ORG_ADMIN' ? 'bg-blue-500' : 'bg-indigo-400'}`}>
+                          {emp.username.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <div className={`font-semibold ${isDarkMode ? 'text-white' : 'text-slate-800'}`}>{emp.username}</div>
+                          <div className={`text-xs flex items-center mt-0.5 ${isDarkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                            <Mail size={12} className="mr-1" /> {emp.email}
+                          </div>
+                        </div>
+                      </div>
+                      <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-bold ${emp.role === 'ORG_ADMIN' ? (isDarkMode ? 'bg-blue-900/30 text-blue-400 border border-blue-800' : 'bg-blue-100 text-blue-700') : (isDarkMode ? 'bg-indigo-900/30 text-indigo-400 border border-indigo-800' : 'bg-indigo-100 text-indigo-700')}`}>
+                        {emp.role.replace('_', ' ')}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            
+            <div className="pt-6">
+              <button 
+                onClick={() => setViewingDept(null)} 
+                className={`w-full py-2.5 rounded-xl font-bold transition-all ${isDarkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

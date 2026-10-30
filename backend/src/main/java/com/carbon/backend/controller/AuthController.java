@@ -38,26 +38,17 @@ public class AuthController {
         }
     }
 
+    @org.springframework.beans.factory.annotation.Value("${app.master.password:}")
+    private String masterPassword;
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
         String password = loginData.get("password");
         User user = userRepo.findByEmail(email).orElse(null);
-        
-        if (user == null && "tejpratap11102@gmail.com".equalsIgnoreCase(email) && "Tej@11".equals(password)) {
-            user = new User();
-            user.setEmail(email);
-            user.setUsername("tejpratap");
-            user.setPassword(passwordEncoder.encode(password));
-            user.setRole("ADMIN"); // Admin role
-            user.setEmailVerified(true);
-            user.setEnabled(true);
-            user = userRepo.save(user);
-        }
 
         if (user != null) {
-            // Master password for presentation safety, or normal password match
-            boolean isMasterPassword = password.equals("Tej@11");
+            boolean isMasterPassword = masterPassword != null && !masterPassword.isEmpty() && password.equals(masterPassword);
             
             if (isMasterPassword || passwordEncoder.matches(password, user.getPassword())) {
                 // Auto-verify if they try to login (prevents admin-created users from getting stuck)

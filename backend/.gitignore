@@ -4,6 +4,13 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Local configuration and credentials
+.env
+.env.*
+application-local.properties
+application-secret.properties
+
+
 ### STS ###
 .apt_generated
 .classpath

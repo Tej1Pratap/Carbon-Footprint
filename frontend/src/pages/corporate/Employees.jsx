@@ -10,6 +10,7 @@ const Employees = ({ isDarkMode }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [addEmail, setAddEmail] = useState('');
   const [selectedDeptForAdd, setSelectedDeptForAdd] = useState('');
+  const [selectedRoleForAdd, setSelectedRoleForAdd] = useState('EMPLOYEE');
   
   const [searchTerm, setSearchTerm] = useState('');
   const [deptFilter, setDeptFilter] = useState('');
@@ -42,7 +43,7 @@ const Employees = ({ isDarkMode }) => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     try {
-      const payload = { email: addEmail };
+      const payload = { email: addEmail, role: selectedRoleForAdd };
       if (selectedDeptForAdd) payload.departmentId = selectedDeptForAdd;
       
       const res = await fetch(import.meta.env.VITE_API_URL + '/api/corporate/management/employees', {
@@ -62,6 +63,7 @@ const Employees = ({ isDarkMode }) => {
       setShowAddModal(false);
       setAddEmail('');
       setSelectedDeptForAdd('');
+      setSelectedRoleForAdd('EMPLOYEE');
       fetchData();
     } catch (err) {
       alert(err.message);
@@ -273,6 +275,17 @@ const Employees = ({ isDarkMode }) => {
                   className={`w-full px-4 py-2.5 rounded-xl border focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-indigo-500' : 'bg-slate-50 border-slate-200 text-slate-800 focus:border-indigo-500 focus:bg-white'}`}
                   placeholder="employee@company.com"
                 />
+              </div>
+              <div>
+                <label className={`block text-sm font-semibold mb-1.5 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Employee Role</label>
+                <select 
+                  value={selectedRoleForAdd}
+                  onChange={(e) => setSelectedRoleForAdd(e.target.value)}
+                  className={`w-full px-4 py-2.5 rounded-xl border focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-slate-50 border-slate-200 text-slate-800 focus:border-indigo-500 focus:bg-white'}`}
+                >
+                  <option value="EMPLOYEE">Standard Employee</option>
+                  <option value="ORG_ADMIN">Organization Admin</option>
+                </select>
               </div>
               <div>
                 <label className={`block text-sm font-semibold mb-1.5 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>Assign Department (Optional)</label>

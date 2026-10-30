@@ -59,7 +59,8 @@ const Login = () => {
     // Enforce organizational email for corporate login
     if (loginType === 'corporate') {
       const domain = email.split('@')[1]?.toLowerCase();
-      const isAllowed = domain === 'company.com' || email.toLowerCase() === 'tejpratap11102@gmail.com';
+      const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || 'admin@company.com').toLowerCase();
+      const isAllowed = domain === 'company.com' || email.toLowerCase() === adminEmail;
       if (!isAllowed) {
         setError('Corporate CSR login is restricted to @company.com domain or the system admin.');
         return;

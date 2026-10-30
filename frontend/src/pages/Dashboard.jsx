@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [timeframe, setTimeframe] = useState('weekly');
   const [categoryTimeframe, setCategoryTimeframe] = useState('all'); 
+  const [hiddenLines, setHiddenLines] = useState({ current: false, last: false, emissions: false });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,6 +70,18 @@ const Dashboard = () => {
   }
 
   if (!data) return null;
+
+  const handleLegendClick = (e) => {
+    setHiddenLines(prev => ({
+      ...prev,
+      [e.dataKey]: !prev[e.dataKey]
+    }));
+  };
+
+  const renderLegendText = (value, entry) => {
+    const isHidden = hiddenLines[entry.dataKey];
+    return <span style={{ color: isHidden ? '#cbd5e1' : '#64748b', textDecoration: isHidden ? 'line-through' : 'none', transition: 'all 0.2s' }}>{value}</span>;
+  };
 
   const scoreColor = getScoreColor(data.carbonScore);
   const monthlyGoal = data.activeGoal?.targetKgCo2 || 300; 
@@ -170,12 +183,15 @@ const Dashboard = () => {
                 
                 {timeframe === 'weekly' ? (
                   <>
-                    <Line type="monotone" name="This Week" dataKey="current" stroke="#22c55e" strokeWidth={4} dot={{r: 4, strokeWidth: 2}} activeDot={{r: 6, strokeWidth: 0}} />
-                    <Line type="monotone" name="Last Week" dataKey="last" stroke="#94a3b8" strokeWidth={3} strokeDasharray="5 5" dot={{r: 3}} activeDot={{r: 5}} />
-                    <Legend verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ fontSize: '13px', fontWeight: 500, color: '#64748b' }} />
+                    <Line type="monotone" name="This Week" dataKey="current" hide={hiddenLines.current} stroke="#22c55e" strokeWidth={4} dot={{r: 4, strokeWidth: 2}} activeDot={{r: 6, strokeWidth: 0}} />
+                    <Line type="monotone" name="Last Week" dataKey="last" hide={hiddenLines.last} stroke="#94a3b8" strokeWidth={3} strokeDasharray="5 5" dot={{r: 3}} activeDot={{r: 5}} />
+                    <Legend onClick={handleLegendClick} formatter={renderLegendText} verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ cursor: 'pointer', fontSize: '13px', fontWeight: 500 }} />
                   </>
                 ) : (
-                  <Line type="monotone" name="Emissions" dataKey="emissions" stroke="#22c55e" strokeWidth={4} dot={{r: 4, strokeWidth: 2}} activeDot={{r: 6, strokeWidth: 0}} />
+                  <>
+                    <Line type="monotone" name="Emissions" dataKey="emissions" hide={hiddenLines.emissions} stroke="#22c55e" strokeWidth={4} dot={{r: 4, strokeWidth: 2}} activeDot={{r: 6, strokeWidth: 0}} />
+                    <Legend onClick={handleLegendClick} formatter={renderLegendText} verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ cursor: 'pointer', fontSize: '13px', fontWeight: 500 }} />
+                  </>
                 )}
               </LineChart>
             </ResponsiveContainer>

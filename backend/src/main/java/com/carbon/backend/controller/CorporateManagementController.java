@@ -170,7 +170,16 @@ public class CorporateManagementController {
                 // Admin is creating the ID
                 userToAdd = new User();
                 userToAdd.setEmail(email);
-                userToAdd.setUsername(email.split("@")[0]);
+                
+                String baseUsername = email.split("@")[0];
+                String uniqueUsername = baseUsername;
+                int counter = 1;
+                while (userRepo.existsByUsername(uniqueUsername)) {
+                    uniqueUsername = baseUsername + counter;
+                    counter++;
+                }
+                userToAdd.setUsername(uniqueUsername);
+                
                 userToAdd.setPassword(passwordEncoder.encode("Welcome@123")); // Default password
                 userToAdd.setRole("USER"); // Base role
                 userToAdd.setEmailVerified(true);

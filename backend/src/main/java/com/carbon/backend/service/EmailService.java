@@ -15,11 +15,17 @@ import java.util.Map;
 @Service
 public class EmailService {
 
-    @Value("${brevo.api.key}")
+    @Value("${brevo.api.key:}")
     private String brevoApiKey;
 
+    @Value("${brevo.sender.email:${spring.mail.username:noreply@ecotrack.com}}")
+    private String senderEmail;
+
+    @Value("${brevo.sender.name:EcoTrack Security}")
+    private String senderName;
+
     private void sendHtmlEmail(String to, String subject, String htmlContent) {
-        if (brevoApiKey == null || brevoApiKey.isEmpty()) {
+        if (brevoApiKey == null || brevoApiKey.trim().isEmpty()) {
             System.out.println("Email Sending Disabled: " + subject + " -> " + to);
             return;
         }
@@ -33,7 +39,7 @@ public class EmailService {
             headers.set("Content-Type", "application/json");
 
             Map<String, Object> body = new HashMap<>();
-            body.put("sender", Map.of("name", "EcoTrack Security", "email", "tejpratap11102@gmail.com"));
+            body.put("sender", Map.of("name", senderName, "email", senderEmail));
             body.put("to", List.of(Map.of("email", to)));
             body.put("subject", subject);
             body.put("htmlContent", htmlContent);

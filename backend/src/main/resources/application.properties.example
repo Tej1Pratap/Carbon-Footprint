@@ -1,0 +1,39 @@
+# ==============================================================================
+# Carbon Footprint Tracker - Environment Configuration Template
+# Copy this file or set these environment variables in your deployment / system.
+# ==============================================================================
+
+# Database Configuration
+DB_URL=jdbc:mysql://localhost:3306/carbon_footprint_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+DB_USERNAME=root
+DB_PASSWORD=root
+PORT=8080
+
+# Admin User Setup (Default seeded admin account)
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=adminpassword
+
+# JWT Authentication
+# Generate a secure 256-bit secret string for production
+JWT_SECRET=your_jwt_secret_key_here
+
+# Frontend URL (For CORS and email reset links)
+FRONTEND_URL=http://localhost:5173
+
+# Google OAuth2 Client ID
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+
+# SMTP Email Settings (Optional if using Brevo)
+SPRING_MAIL_HOST=smtp.gmail.com
+SPRING_MAIL_PORT=587
+SPRING_MAIL_USERNAME=your_email@gmail.com
+SPRING_MAIL_PASSWORD=your_app_password
+
+# Brevo HTTP Email Service
+BREVO_API_KEY=your_brevo_api_key_here
+BREVO_SENDER_EMAIL=noreply@example.com
+BREVO_SENDER_NAME=Carbon Footprint Tracker
+
+# AI Integration Service (Groq / Gemini)
+GROQ_API_KEY=your_groq_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
